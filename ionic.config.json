@@ -1,0 +1,7 @@
+{
+  "name": "Tasmota Mgmt",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
