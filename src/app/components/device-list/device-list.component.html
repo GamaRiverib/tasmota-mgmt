@@ -1,0 +1,8 @@
+<ion-list>
+  <ion-item *ngFor="let device of devices"class="ion-padding-bottom">
+    <ion-icon size="large" slot="start" name="hardware-chip-outline"></ion-icon>
+    <ion-label>
+      <h1>{{ device.DeviceName || device.id }}</h1>
+    </ion-label>
+  </ion-item>
+</ion-list>

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Device } from 'src/app/models/device';
+import { TasmotaApiService } from 'src/app/services/tasmota-api.service';
 
 @Component({
   selector: 'app-devices',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DevicesPage implements OnInit {
 
-  constructor() { }
+  devices: Device[];
 
-  ngOnInit() {
+  constructor(private api: TasmotaApiService) {
+    this.devices = [];
+  }
+
+  async ngOnInit(): Promise<void> {
+    this.devices = await this.api.getDevices();
   }
 
 }
