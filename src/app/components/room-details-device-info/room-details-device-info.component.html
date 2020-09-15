@@ -1,3 +1,71 @@
-<p>
-  room-details-device-info works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ device.DeviceName || device.id || 'Device information' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+
+    <ion-list-header>
+      <ion-label color="secondary">Device information</ion-label>
+    </ion-list-header>
+    
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="stacked">Name</ion-label>
+      <ion-input type="text" [value]="device.DeviceName" readonly></ion-input>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="stacked">Id</ion-label>
+      <ion-input type="text" [value]="device.id" readonly></ion-input>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list *ngIf="device.FriendlyName && device.FriendlyName.length > 0">
+
+    <ion-list-header>
+      <ion-label color="secondary">Friendly names</ion-label>
+    </ion-list-header>
+
+    <ion-item class="ion-margin-bottom" *ngFor="let friendlyName of device.FriendlyName">
+      <ion-label>
+        <h2>{{ friendlyName }}</h2>
+      </ion-label>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list *ngIf="device.state">
+
+    <ion-list-header>
+      <ion-label color="secondary">State</ion-label>
+    </ion-list-header>
+
+    <ion-item *ngFor="let item of device.state | keyvalue" [detail]="isObject(item.value)">
+      <ion-label [position]="isObject(item.value) ? '' : 'stacked'">{{ item.key }}</ion-label>
+      <ion-input type="text" [value]="item.value" readonly *ngIf="!isObject(item.value)"></ion-input>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list *ngIf="device.sensor">
+
+    <ion-list-header>
+      <ion-label color="secondary">Sensor</ion-label>
+    </ion-list-header>
+
+    <ion-item *ngFor="let item of device.sensor | keyvalue">
+      <ion-label position="stacked">{{ item.key }}</ion-label>
+      <ion-input type="text" [value]="item.value" readonly></ion-input>
+    </ion-item>
+
+  </ion-list>
+
+</ion-content>
+

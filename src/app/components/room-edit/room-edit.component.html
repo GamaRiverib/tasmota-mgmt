@@ -21,7 +21,7 @@
     <ion-list>
 
       <ion-list-header>
-        <ion-label>Room information</ion-label>
+        <ion-label color="secondary">Room information</ion-label>
       </ion-list-header>
       
       <ion-item class="ion-margin-bottom">
@@ -43,7 +43,7 @@
     <ion-list *ngIf="edit">
 
       <ion-list-header>
-        <ion-label>Room devices</ion-label>
+        <ion-label color="secondary">Room devices</ion-label>
       </ion-list-header>
 
       <ion-item *ngIf="!room.devices || room.devices.length == 0">
@@ -52,7 +52,7 @@
         </ion-label>
       </ion-item>
       
-      <ion-item *ngFor="let device of room.devices"class="ion-padding-bottom">
+      <ion-item *ngFor="let device of room.devices"class="ion-padding-bottom" (click)="showDeviceInfo(device.id)">
         <ion-icon size="large" slot="start" name="cube-outline"></ion-icon>
         <ion-label>
           <h1>{{ device.DeviceName || device.id }}</h1>
@@ -63,7 +63,7 @@
   </form>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="selectDevices()">
-      <ion-icon name="add"></ion-icon>
+      <ion-icon name="pencil-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>

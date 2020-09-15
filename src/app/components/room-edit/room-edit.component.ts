@@ -2,7 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { Room } from 'src/app/models/room';
 import { TasmotaApiService } from 'src/app/services/tasmota-api.service';
-import { SelectDevicesComponent } from '../select-devices/select-devices.component';
+import { RoomDetailsDeviceInfoComponent } from '../room-details-device-info/room-details-device-info.component';
+import { RoomDetailsDevicesSelectComponent } from '../room-details-devices-select/room-details-devices-select.component';
 
 @Component({
   selector: 'app-room-edit',
@@ -91,7 +92,7 @@ export class RoomEditComponent implements OnInit {
   async selectDevices(): Promise<void> {
     const selected = this.room.devices || [];
     const modal = await this.modalController.create({
-      component: SelectDevicesComponent,
+      component: RoomDetailsDevicesSelectComponent,
       componentProps: {
         house: this.house,
         room: this.room.id,
@@ -102,6 +103,14 @@ export class RoomEditComponent implements OnInit {
       if (res.role === 'selected' && res.data.selected) {
         this.room.devices = res.data.selected;
       }
+    });
+    return await modal.present();
+  }
+
+  async showDeviceInfo(id: string): Promise<void> {
+    const modal = await this.modalController.create({
+      component: RoomDetailsDeviceInfoComponent,
+      componentProps: { id }
     });
     return await modal.present();
   }

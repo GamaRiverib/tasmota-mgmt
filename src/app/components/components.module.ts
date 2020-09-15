@@ -10,7 +10,6 @@ import { RoomDetailsDevicesSelectComponent } from './room-details-devices-select
 import { RoomListComponent } from './room-list/room-list.component';
 import { HouseEditComponent } from './house-edit/house-edit.component';
 import { RoomEditComponent } from './room-edit/room-edit.component';
-import { SelectDevicesComponent } from './select-devices/select-devices.component';
 
 @NgModule({
   declarations: [
@@ -21,8 +20,7 @@ import { SelectDevicesComponent } from './select-devices/select-devices.componen
     RoomDetailsDeviceInfoComponent,
     RoomDetailsDevicesSelectComponent,
     RoomEditComponent,
-    RoomListComponent,
-    SelectDevicesComponent
+    RoomListComponent
   ],
   exports: [
     HouseDetailsComponent,
@@ -32,8 +30,7 @@ import { SelectDevicesComponent } from './select-devices/select-devices.componen
     RoomDetailsDeviceInfoComponent,
     RoomDetailsDevicesSelectComponent,
     RoomEditComponent,
-    RoomListComponent,
-    SelectDevicesComponent
+    RoomListComponent
   ],
   imports: [
     CommonModule,

@@ -69,7 +69,7 @@ export class TasmotaApiService {
   }
 
   public async setHouseRoomDevices(house: string, room: string, devices: RoomDevice[]): Promise<void> {
-    const url = `${SERVER_URL}/houses/${house}/rooms/${room}`;
+    const url = `${SERVER_URL}/houses/${house}/rooms/${room}/devices`;
     const body = { devices };
     return this.httpClient.put<void>(url, body)
       .toPromise<void>();
