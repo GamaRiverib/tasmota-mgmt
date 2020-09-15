@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ edit ? 'Edit' : 'Add' }} house</ion-title>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="edit" (click)="remove()">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="save()" [disabled]="!house.name || house.name.length == 0">
+        <ion-icon slot="icon-only" name="save-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form>
+    <ion-list>
+
+      <ion-list-header>
+        <ion-label>House information</ion-label>
+      </ion-list-header>
+      
+      <ion-item class="ion-margin-bottom">
+        <ion-label position="stacked">Name</ion-label>
+        <ion-input autocomplete="off" type="text" name="name" [(ngModel)]="house.name" required></ion-input>
+      </ion-item>
+
+      <ion-item class="ion-margin-bottom">
+        <ion-label position="stacked">Id</ion-label>
+        <ion-input autocomplete="off" type="text" name="id" [(ngModel)]="house.id"></ion-input>
+      </ion-item>
+
+      <ion-item class="ion-margin-bottom">
+        <ion-label position="stacked">Description</ion-label>
+        <ion-input autocomplete="off" type="text" name="description" [(ngModel)]="house.description"></ion-input>
+      </ion-item>
+
+    </ion-list>
+    <ion-list *ngIf="edit">
+
+      <ion-list-header>
+        <ion-label>House rooms</ion-label>
+      </ion-list-header>
+
+      <ion-item *ngIf="!house.rooms || house.rooms.length == 0">
+        <ion-label class="ion-text-center">
+          No rooms yet
+        </ion-label>
+      </ion-item>
+      
+      <ion-item *ngFor="let room of house.rooms"class="ion-padding-bottom" (click)="editRoom(room)">
+        <ion-icon size="large" slot="start" name="cube-outline"></ion-icon>
+        <ion-label>
+          <h1>{{ room.name }}</h1>
+        </ion-label>
+      </ion-item>
+
+    </ion-list>
+  </form>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addRoom()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

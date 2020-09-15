@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { House } from '../models/house';
-import { Room } from '../models/room';
+import { Room, RoomDevice } from '../models/room';
 import { Device } from '../models/device';
 import { DeviceConfig } from '../models/device-config';
 import { Command } from '../models/command';
@@ -68,7 +68,7 @@ export class TasmotaApiService {
       .toPromise<void>();
   }
 
-  public async setHouseRoomDevices(house: string, room: string, devices: { id: string, DeviceName: string }[]): Promise<void> {
+  public async setHouseRoomDevices(house: string, room: string, devices: RoomDevice[]): Promise<void> {
     const url = `${SERVER_URL}/houses/${house}/rooms/${room}`;
     const body = { devices };
     return this.httpClient.put<void>(url, body)

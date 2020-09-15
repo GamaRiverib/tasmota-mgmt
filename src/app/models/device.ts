@@ -5,4 +5,5 @@ export class Device {
     sensor?: any;
     DeviceName?: string;
     FriendlyName?: string[];
+    selected?: boolean;
 }
