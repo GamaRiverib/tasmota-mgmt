@@ -11,9 +11,11 @@ import { RoomListComponent } from './room-list/room-list.component';
 import { HouseEditComponent } from './house-edit/house-edit.component';
 import { RoomEditComponent } from './room-edit/room-edit.component';
 import { DeviceListComponent } from './device-list/device-list.component';
+import { AttributesViewerComponent } from './attributes-viewer/attributes-viewer.component';
 
 @NgModule({
   declarations: [
+    AttributesViewerComponent,
     DeviceListComponent,
     HouseDetailsComponent,
     HouseEditComponent,
@@ -25,6 +27,7 @@ import { DeviceListComponent } from './device-list/device-list.component';
     RoomListComponent
   ],
   exports: [
+    AttributesViewerComponent,
     DeviceListComponent,
     HouseDetailsComponent,
     HouseEditComponent,

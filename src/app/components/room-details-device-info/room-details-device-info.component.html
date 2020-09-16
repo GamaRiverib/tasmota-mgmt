@@ -16,12 +16,12 @@
     </ion-list-header>
     
     <ion-item class="ion-margin-bottom">
-      <ion-label position="stacked">Name</ion-label>
+      <ion-label color="medium" position="stacked">Name</ion-label>
       <ion-input type="text" [value]="device.DeviceName" readonly></ion-input>
     </ion-item>
 
     <ion-item class="ion-margin-bottom">
-      <ion-label position="stacked">Id</ion-label>
+      <ion-label color="medium" position="stacked">Id</ion-label>
       <ion-input type="text" [value]="device.id" readonly></ion-input>
     </ion-item>
 
@@ -47,8 +47,8 @@
       <ion-label color="secondary">State</ion-label>
     </ion-list-header>
 
-    <ion-item *ngFor="let item of device.state | keyvalue" [detail]="isObject(item.value)">
-      <ion-label [position]="isObject(item.value) ? '' : 'stacked'">{{ item.key }}</ion-label>
+    <ion-item *ngFor="let item of device.state | keyvalue" [detail]="isObject(item.value)" (click)="viewAttribute(item)">
+      <ion-label [color]="isObject(item.value) ? '' : 'medium'" [position]="isObject(item.value) ? '' : 'stacked'">{{ item.key }}</ion-label>
       <ion-input type="text" [value]="item.value" readonly *ngIf="!isObject(item.value)"></ion-input>
     </ion-item>
 
@@ -60,9 +60,9 @@
       <ion-label color="secondary">Sensor</ion-label>
     </ion-list-header>
 
-    <ion-item *ngFor="let item of device.sensor | keyvalue">
-      <ion-label position="stacked">{{ item.key }}</ion-label>
-      <ion-input type="text" [value]="item.value" readonly></ion-input>
+    <ion-item *ngFor="let item of device.sensor | keyvalue" [detail]="isObject(item.value)" (click)="viewAttribute(item)">
+      <ion-label [color]="isObject(item.value) ? '' : 'medium'" [position]="isObject(item.value) ? '' : 'stacked'">{{ item.key }}</ion-label>
+      <ion-input type="text" [value]="item.value" readonly *ngIf="!isObject(item.value)"></ion-input>
     </ion-item>
 
   </ion-list>

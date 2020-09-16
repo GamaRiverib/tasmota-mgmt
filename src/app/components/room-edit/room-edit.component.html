@@ -18,32 +18,32 @@
 </ion-header>
 <ion-content>
   <form>
-    <ion-list>
+    <ion-list [class]="{ fill: !edit}">
 
       <ion-list-header>
-        <ion-label color="secondary">Room information</ion-label>
+        <ion-label color="secondary">Information</ion-label>
       </ion-list-header>
       
       <ion-item class="ion-margin-bottom">
-        <ion-label position="stacked">Name</ion-label>
+        <ion-label color="medium" position="stacked">Name</ion-label>
         <ion-input autocomplete="off" type="text" name="name" [(ngModel)]="room.name" required></ion-input>
       </ion-item>
 
       <ion-item class="ion-margin-bottom">
-        <ion-label position="stacked">Id</ion-label>
+        <ion-label color="medium" position="stacked">Id</ion-label>
         <ion-input autocomplete="off" type="text" name="id" [(ngModel)]="room.id"></ion-input>
       </ion-item>
 
       <ion-item class="ion-margin-bottom">
-        <ion-label position="stacked">Description</ion-label>
+        <ion-label color="medium" position="stacked">Description</ion-label>
         <ion-input autocomplete="off" type="text" name="description" [(ngModel)]="room.description"></ion-input>
       </ion-item>
 
     </ion-list>
-    <ion-list *ngIf="edit">
+    <ion-list *ngIf="edit" class="fill">
 
       <ion-list-header>
-        <ion-label color="secondary">Room devices</ion-label>
+        <ion-label color="secondary">Devices</ion-label>
       </ion-list-header>
 
       <ion-item *ngIf="!room.devices || room.devices.length == 0">
@@ -53,7 +53,7 @@
       </ion-item>
       
       <ion-item *ngFor="let device of room.devices"class="ion-padding-bottom" (click)="showDeviceInfo(device.id)">
-        <ion-icon size="large" slot="start" name="cube-outline"></ion-icon>
+        <ion-icon size="large" slot="start" name="hardware-chip-outline"></ion-icon>
         <ion-label>
           <h1>{{ device.DeviceName || device.id }}</h1>
         </ion-label>

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Device } from 'src/app/models/device';
 import { TasmotaApiService } from 'src/app/services/tasmota-api.service';
+import { AttributesViewerComponent } from '../attributes-viewer/attributes-viewer.component';
 
 @Component({
   selector: 'app-room-details-device-info',
@@ -34,6 +35,17 @@ export class RoomDetailsDeviceInfoComponent implements OnInit {
 
   isObject(data: any): boolean {
     return typeof data === 'object';
+  }
+
+  async viewAttribute(item: { key: string, value: any }): Promise<void> {
+    console.log('viewAttribute', item);
+    if (this.isObject(item.value)) {
+      const modal = await this.modalController.create({
+        component: AttributesViewerComponent,
+        componentProps: item
+      });
+      return await modal.present();
+    }
   }
 
 }
