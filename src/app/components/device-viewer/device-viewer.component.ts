@@ -3,6 +3,7 @@ import { ActionSheetController, IonContent, ModalController } from '@ionic/angul
 import { Device } from 'src/app/models/device';
 import { InjectionService } from 'src/app/services/injection.service';
 import { TasmotaApiService } from 'src/app/services/tasmota-api.service';
+import { Dht11Component } from 'src/app/widgets/dht11/dht11.component';
 import { PowerStateComponent } from 'src/app/widgets/power-state/power-state.component';
 import { Widget } from 'src/app/widgets/widget';
 
@@ -25,7 +26,7 @@ export class DeviceViewerComponent implements OnInit {
     private actionSheetController: ActionSheetController) {
       // TODO: get Device Main Page Widgets
       this.widgets = [];
-      this.widgets.push(PowerStateComponent);
+      this.widgets.push(PowerStateComponent, Dht11Component);
       setTimeout(this.appendWidgets.bind(this));
     }
 

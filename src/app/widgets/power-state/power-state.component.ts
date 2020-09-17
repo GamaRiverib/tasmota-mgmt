@@ -89,9 +89,6 @@ export class PowerStateComponent implements Widget, OnInit {
       command: powerData.topic,
       parameters: 'Toggle'
     };
-    if (powerData.index) {
-      command.index = parseInt(powerData.index, 10);
-    }
     return this.api.sendCommandDevice(id, command);
   }
 
