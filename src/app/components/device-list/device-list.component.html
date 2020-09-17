@@ -1,6 +1,10 @@
 <ion-list>
-  <ion-item *ngFor="let device of devices"class="ion-padding-bottom">
+  <ion-item *ngFor="let device of devices"class="ion-padding-bottom" (click)="viewDevice(device)">
     <ion-icon size="large" slot="start" name="hardware-chip-outline"></ion-icon>
+    <ion-icon size="large" slot="end"
+      [color]="device.online ? 'success': 'danger'"
+      [name]="device.online ? 'cloud-outline': 'cloud-offline-outline'">
+    </ion-icon>
     <ion-label>
       <h1>{{ device.DeviceName || device.id }}</h1>
     </ion-label>

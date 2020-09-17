@@ -12,11 +12,14 @@ import { HouseEditComponent } from './house-edit/house-edit.component';
 import { RoomEditComponent } from './room-edit/room-edit.component';
 import { DeviceListComponent } from './device-list/device-list.component';
 import { AttributesViewerComponent } from './attributes-viewer/attributes-viewer.component';
+import { DeviceViewerComponent } from './device-viewer/device-viewer.component';
+import { WidgetsModule } from '../widgets/widgets.module';
 
 @NgModule({
   declarations: [
     AttributesViewerComponent,
     DeviceListComponent,
+    DeviceViewerComponent,
     HouseDetailsComponent,
     HouseEditComponent,
     HouseListComponent,
@@ -29,6 +32,7 @@ import { AttributesViewerComponent } from './attributes-viewer/attributes-viewer
   exports: [
     AttributesViewerComponent,
     DeviceListComponent,
+    DeviceViewerComponent,
     HouseDetailsComponent,
     HouseEditComponent,
     HouseListComponent,
@@ -41,7 +45,8 @@ import { AttributesViewerComponent } from './attributes-viewer/attributes-viewer
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule
+    IonicModule,
+    WidgetsModule
   ]
 })
 export class ComponentsModule { }

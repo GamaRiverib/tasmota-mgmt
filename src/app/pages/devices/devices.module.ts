@@ -9,6 +9,7 @@ import { DevicesPageRoutingModule } from './devices-routing.module';
 import { DevicesPage } from './devices.page';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { DeviceListComponent } from 'src/app/components/device-list/device-list.component';
+import { WidgetsModule } from 'src/app/widgets/widgets.module';
 
 @NgModule({
   entryComponents: [
@@ -19,6 +20,7 @@ import { DeviceListComponent } from 'src/app/components/device-list/device-list.
     FormsModule,
     IonicModule,
     ComponentsModule,
+    WidgetsModule,
     DevicesPageRoutingModule
   ],
   declarations: [DevicesPage]

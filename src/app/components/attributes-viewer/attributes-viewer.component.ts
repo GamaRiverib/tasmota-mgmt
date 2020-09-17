@@ -24,7 +24,6 @@ export class AttributesViewerComponent implements OnInit {
   }
 
   async viewAttribute(item: { key: string, value: any }): Promise<void> {
-    console.log('viewAttribute', item);
     if (this.isObject(item.value)) {
       const modal = await this.modalController.create({
         component: AttributesViewerComponent,
