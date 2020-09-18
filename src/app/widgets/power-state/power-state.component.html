@@ -7,10 +7,10 @@
       No power drivers
     </ion-label>
   </ion-item>
-  <ion-item *ngFor="let power of powerList"class="ion-padding-bottom" (click)="toggle(power)">
+  <ion-item *ngFor="let power of powerList" class="ion-padding-bottom" (click)="toggle(power)">
     <ion-icon size="large" slot="start" name="power-outline"
       [color]="power.switch ? 'success': 'danger'">
-  </ion-icon>
+    </ion-icon>
     <ion-label>
       <h1>{{ power.name }}</h1>
     </ion-label>

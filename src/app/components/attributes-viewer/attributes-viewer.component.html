@@ -5,11 +5,14 @@
         <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{ key }}</ion-title>
+    <ion-title>{{ title }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-list-header>
+    <ion-label color="secondary">{{ key }}</ion-label>
+  </ion-list-header>
   <ion-list>
     <ion-item *ngFor="let item of value | keyvalue" [detail]="isObject(item.value)" (click)="viewAttribute(item)">
       <ion-label [color]="isObject(item.value) ? '' : 'medium'" [position]="isObject(item.value) ? '' : 'stacked'">{{ item.key }}</ion-label>

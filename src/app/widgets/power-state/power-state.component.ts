@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Command } from 'src/app/models/command';
 import { Device } from 'src/app/models/device';
 import { TasmotaApiService } from 'src/app/services/tasmota-api.service';
@@ -17,6 +17,48 @@ interface PowerData {
   switch: boolean;
 }
 
+class PowerDataImpl implements PowerData {
+
+  index: string;
+  state: string;
+
+  constructor(private device: Device, index: string) {
+    this.index = index;
+    this.state = this.device.state[`POWER${this.index}`];
+  }
+
+  get topic(): string {
+    return `POWER${this.index}`;
+  }
+
+  get name(): string {
+    let name = `POWER${this.index}`;
+    if (this.device.FriendlyName) {
+      let j = 0;
+      if (this.index !== '') {
+        j = parseInt(this.index, 10) - 1;
+      }
+      if (j >= 0 && j < this.device.FriendlyName.length) {
+        name = this.device.FriendlyName[j] || name;
+      }
+    }
+    return name;
+  }
+
+  get on(): boolean {
+    return this.state.toUpperCase() === 'ON' || this.state === '1' || this.state.toUpperCase() === 'TRUE';
+  }
+
+  get switch(): boolean {
+    let sw = this.on;
+    if (this.device.sensor && this.device.sensor[`Switch${this.index}`]) {
+      const swState: string = this.device.sensor[`Switch${this.index}`];
+      sw = swState.toUpperCase() === 'ON' || swState === '1' || swState.toUpperCase() === 'TRUE';
+    }
+    return sw;
+  }
+}
+
 @Component({
   selector: 'app-power-state',
   templateUrl: './power-state.component.html',
@@ -24,60 +66,31 @@ interface PowerData {
 })
 export class PowerStateComponent implements Widget, OnInit {
 
+  @Input() api: TasmotaApiService;
+  @Input() device: Device;
+  @Input() options: PowerStateWidgetOptions;
+  
   private powerList: PowerData[];
-  private api: TasmotaApiService;
-  private device: Device;
-  private options: PowerStateWidgetOptions;
 
   constructor() {
-    this.powerList = [];
+
   }
 
   ngOnInit() {
+    this.updateView(this.device);
   }
 
-  private updateView(): void {
+  public updateView(device: Device): void {
     if (!this.device || !this.device.state) {
       return;
     }
+    this.powerList = [];
     const indexes = this.options && this.options.indexes ? this.options.indexes : ['', '1', '2', '3', '4'];
     indexes.forEach(i => {
       if (this.device.state[`POWER${i}`]) {
-        const topic = `POWER${i}`;
-        let name = `POWER${i}`;
-        if (this.device.FriendlyName) {
-          let j = 0;
-          if (i !== '') {
-            j = parseInt(i, 10) - 1;
-          }
-          if (j >= 0 && j < this.device.FriendlyName.length) {
-            name = this.device.FriendlyName[j] || name;
-          }
-        }
-        const state: string = this.device.state[`POWER${i}`];
-        const on = state.toUpperCase() === 'ON' || state === '1';
-        let sw = on;
-        if (this.device.sensor && this.device.sensor[`Switch${i}`]) {
-          const swState: string = this.device.sensor[`Switch${i}`];
-          sw = swState.toUpperCase() === 'ON' || swState === '1';
-        }
-        const index = i;
-        this.powerList.push({ index, name, on, state, topic, switch: sw });
+       this.powerList.push(new PowerDataImpl(this.device, i));
       }
     });
-  }
-
-  setApi(api: TasmotaApiService): void {
-    this.api = api;
-  }
-
-  setDevice(device: Device): void {
-    this.device = device;
-    this.updateView();
-  }
-
-  setOptions(options: any): void {
-    this.options = options;
   }
 
   async toggle(powerData: PowerData): Promise<void> {

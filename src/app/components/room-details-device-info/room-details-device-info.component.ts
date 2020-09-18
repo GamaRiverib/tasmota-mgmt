@@ -39,9 +39,14 @@ export class RoomDetailsDeviceInfoComponent implements OnInit {
 
   async viewAttribute(item: { key: string, value: any }): Promise<void> {
     if (this.isObject(item.value)) {
+      const props = {
+        title: this.device.DeviceName || this.device.id,
+        key: item.key,
+        value: item.value
+      };
       const modal = await this.modalController.create({
         component: AttributesViewerComponent,
-        componentProps: item
+        componentProps: props
       });
       return await modal.present();
     }

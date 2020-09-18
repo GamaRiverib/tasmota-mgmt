@@ -8,6 +8,7 @@ import { ModalController } from '@ionic/angular';
 })
 export class AttributesViewerComponent implements OnInit {
 
+  @Input() title: string;
   @Input() key: string;
   @Input() value: any;
 
@@ -25,9 +26,14 @@ export class AttributesViewerComponent implements OnInit {
 
   async viewAttribute(item: { key: string, value: any }): Promise<void> {
     if (this.isObject(item.value)) {
+      const props = {
+        title: `${this.title} > ${this.key}`, // TODO: validate
+        key: item.key,
+        value: item.value
+      };
       const modal = await this.modalController.create({
         component: AttributesViewerComponent,
-        componentProps: item
+        componentProps: props
       });
       return await modal.present();
     }

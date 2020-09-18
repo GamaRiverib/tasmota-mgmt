@@ -11,6 +11,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { SERVER_URL } from 'src/environments/environment';
+
+const socketConfig: SocketIoConfig = { url: SERVER_URL, options: {} };
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,7 +24,8 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    SocketIoModule.forRoot(socketConfig)
   ],
   providers: [
     StatusBar,

@@ -1,0 +1,19 @@
+<ion-list>
+  <ion-list-header>
+    <ion-label color="secondary">PIR Motion Sensor</ion-label>
+  </ion-list-header>
+  <ion-item *ngIf="">
+    <ion-label class="ion-text-center">
+      No pir motion sensor
+    </ion-label>
+  </ion-item>
+  <ion-item *ngFor="let sensor of sensors" class="ion-padding-bottom">
+    <ion-icon size="large" slot="start" name="wifi-outline" color="success">
+    </ion-icon>
+    <ion-label>
+      <h1>{{ sensor.name }}</h1>
+    </ion-label>
+    <ion-icon size="large" slot="end" name="walk-outline" color="danger" *ngIf="sensor.on">
+    </ion-icon>
+  </ion-item>
+</ion-list>
