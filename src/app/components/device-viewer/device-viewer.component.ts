@@ -2,11 +2,14 @@ import { Component, Input, OnChanges, OnInit, Type, ViewChild, ViewContainerRef 
 import { ActionSheetController, IonContent, ModalController } from '@ionic/angular';
 import { Device } from 'src/app/models/device';
 import { InjectionService } from 'src/app/services/injection.service';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { TasmotaApiService } from 'src/app/services/tasmota-api.service';
-import { Dht11Component } from 'src/app/widgets/dht11/dht11.component';
-import { PirMotionComponent } from 'src/app/widgets/pir-motion/pir-motion.component';
+import { getWidgetComponent } from 'src/app/widgets';
+import { DeviceViewSettings } from 'src/app/widgets/device-view-settings';
 import { PowerStateComponent } from 'src/app/widgets/power-state/power-state.component';
 import { Widget } from 'src/app/widgets/widget';
+import { WidgetSettings } from 'src/app/widgets/widget-settings';
+import { DeviceViewerWidgetsComponent } from '../device-viewer-widgets/device-viewer-widgets.component';
 
 @Component({
   selector: 'app-device-viewer',
@@ -18,16 +21,14 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
   @Input() device: Device;
   @ViewChild(IonContent, { read: ViewContainerRef }) content: ViewContainerRef;
 
-  private widgets: Type<Widget>[];
+  private widgets: WidgetSettings[];
 
   constructor(
     private injection: InjectionService,
     private api: TasmotaApiService,
+    private localStorage: LocalStorageService,
     private modalController: ModalController,
     private actionSheetController: ActionSheetController) {
-      // TODO: get Device Main Page Widgets
-      this.widgets = [];
-      this.widgets.push(PowerStateComponent, Dht11Component);
       setTimeout(this.appendWidgets.bind(this));
     }
 
@@ -38,21 +39,29 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
     console.log('device-viewer', 'onChanges', record);
   }
 
-  private appendWidgets(): void {
-    if (this.device.id === 'senso_A54B47') {
-      this.widgets[0] = PirMotionComponent;
+  private async appendWidgets(): Promise<void> {
+    this.widgets = [];
+    let settings: DeviceViewSettings | null = await this.localStorage.getDeviceViewSettings(this.device.id);
+    if (settings === null) {
+      settings = { general: {}, widgets: [{ widget: PowerStateComponent.name }] };
+      try {
+        this.localStorage.setDeviceViewSettings(this.device.id, settings);
+      } catch (reason) {
+        console.log(reason);
+      }
     }
+    this.widgets = settings.widgets || [{ widget: PowerStateComponent.name }];
     this.widgets.forEach(c => this.appendWidget(c));
   }
 
-  private async appendWidget(component: Type<Widget>): Promise<void> {
+  private async appendWidget(settings: WidgetSettings): Promise<void> {
+    const component: Type<Widget> = getWidgetComponent(settings.widget);
     const componentRef = this.injection.appendComponent(component, {}, this.content.element.nativeElement);
     const widget: Widget = componentRef.instance;
     widget.api = this.api;
     widget.device = this.device;
-    widget.options = { indexes: [''], stateOnPower: true };
+    widget.options = settings.options || {};
     this.api.onDeviceStateChange(d => widget.updateView(d));
-    // this.api.onDeviceStateChange(widget.updateView.bind(widget));
   }
 
 
@@ -65,6 +74,18 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
     const actionSheet = await this.actionSheetController.create({
       header: 'Actions',
       buttons: [{
+        text: 'Widgets',
+        icon: 'grid-outline',
+        handler: async () => {
+          const name = this.device.DeviceName || this.device.id;
+          const deviceId = this.device.id;
+          const modal = await this.modalController.create({
+            component: DeviceViewerWidgetsComponent,
+            componentProps: { name, deviceId }
+          });
+          return modal.present();
+        }
+      }, {
         text: 'Information',
         icon: 'information-outline',
         handler: () => {

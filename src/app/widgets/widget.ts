@@ -8,3 +8,8 @@ export interface Widget {
 
     updateView(device: Device): void;
 }
+
+// tslint:disable-next-line: no-empty-interface
+export interface WidgetOptions {
+    getOptions(): any;
+}

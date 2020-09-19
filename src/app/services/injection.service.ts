@@ -37,7 +37,7 @@ export class InjectionService {
     return this.getComponentRootNode(this.getRootViewContainer());
   }
 
-  appendComponent<T>(componentClass: Type<T>, options?: any, location?: Element): ComponentRef<any> {
+  appendComponent<T>(componentClass: Type<T>, options?: any, location?: Element, replace?: boolean): ComponentRef<any> {
     if (!options) {
       options = {};
     }
@@ -54,9 +54,12 @@ export class InjectionService {
       this.applicationRef.detachView(componentRef.hostView);
     });
 
+    if (replace) {
+      location.childNodes.forEach((node: ChildNode) => location.removeChild(node));
+    }
+
     location.appendChild(componentRootNode);
 
     return componentRef;
   }
-
 }

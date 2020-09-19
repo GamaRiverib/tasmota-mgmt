@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ name }}</ion-title>
+    <ion-buttons slot="end" *ngIf="widgets && widgets.length > 1">
+      <ion-button (click)="toggleReorder()">
+        <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-list-header>
+      <ion-label color="secondary">Widgets</ion-label>
+    </ion-list-header>
+    <ion-reorder-group (ionItemReorder)="doReorder($event)" [disabled]="reorderDisabled">
+      <ion-item *ngFor="let widget of widgets"class="ion-padding-bottom" (click)="editWidget(widget)">
+        <ion-icon size="large" slot="start" name="cube-outline"></ion-icon>
+        <ion-label>
+          <h2>{{ widget.widget }}</h2>
+        </ion-label>
+        <ion-reorder slot="end"></ion-reorder>
+      </ion-item>
+    </ion-reorder-group>
+  </ion-list>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addWidget()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

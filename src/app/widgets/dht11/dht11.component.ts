@@ -6,6 +6,7 @@ import { Widget } from '../widget';
 // tslint:disable-next-line: no-empty-interface
 export interface Dht11WidgetOptions {
   twoCards: boolean;
+  showLastUpdate: boolean;
 }
 
 @Component({
@@ -23,12 +24,12 @@ export class Dht11Component implements Widget, OnInit {
   private tempUnit: string;
   private humidity: string;
 
+  private lastUpdate: Date;
+
   constructor() {
-    // TODO: test options
     if (this.options === undefined) {
-      this.options = { twoCards: true };
+      this.options = { twoCards: true, showLastUpdate: false };
     }
-    this.options.twoCards = false;
   }
 
   ngOnInit() {
@@ -43,6 +44,9 @@ export class Dht11Component implements Widget, OnInit {
     this.temperature = this.device.sensor.DHT11.Temperature;
     this.tempUnit = this.device.sensor.TempUnit;
     this.humidity = this.device.sensor.DHT11.Humidity;
+
+    const lastUpdate: Date = new Date(this.device.state.Time);
+    this.lastUpdate = lastUpdate;
   }
 
 }

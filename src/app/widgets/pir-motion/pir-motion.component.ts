@@ -10,6 +10,7 @@ export interface PirMotionWidgetOptions {
 }
 
 interface SensorData {
+  online: boolean;
   index: string;
   name: string;
   on: boolean;
@@ -39,6 +40,7 @@ export class PirMotionComponent implements Widget, OnInit {
       return;
     }
     this.sensors = [];
+    const online = this.device.online || false;
     const indexes = this.options && this.options.indexes ? this.options.indexes : ['', '1', '2', '3', '4'];
     const names = this.options && this.options.names ? this.options.names : [undefined, undefined, undefined, undefined, undefined];
     indexes.forEach((index: string, j: number) => {
@@ -52,7 +54,7 @@ export class PirMotionComponent implements Widget, OnInit {
         pirState = this.device.sensor[`Switch${index}`];
       }
       on = pirState.toUpperCase() === 'ON' || pirState === '1' || pirState.toUpperCase() === 'TRUE';
-      this.sensors.push({ index, name, on });
+      this.sensors.push({ online, index, name, on });
     });
   }
 

@@ -14,11 +14,17 @@ import { DeviceListComponent } from './device-list/device-list.component';
 import { AttributesViewerComponent } from './attributes-viewer/attributes-viewer.component';
 import { DeviceViewerComponent } from './device-viewer/device-viewer.component';
 import { WidgetsModule } from '../widgets/widgets.module';
+import { DeviceViewerWidgetEditOptionsComponent } from './device-viewer-widget-edit-options/device-viewer-widget-edit-options.component';
+import { DeviceViewerWidgetsComponent } from './device-viewer-widgets/device-viewer-widgets.component';
+import { DeviceViewerWidgetSelectComponent } from './device-viewer-widget-select/device-viewer-widget-select.component';
 
 @NgModule({
   declarations: [
     AttributesViewerComponent,
     DeviceListComponent,
+    DeviceViewerWidgetEditOptionsComponent,
+    DeviceViewerWidgetSelectComponent,
+    DeviceViewerWidgetsComponent,
     DeviceViewerComponent,
     HouseDetailsComponent,
     HouseEditComponent,
@@ -32,6 +38,9 @@ import { WidgetsModule } from '../widgets/widgets.module';
   exports: [
     AttributesViewerComponent,
     DeviceListComponent,
+    DeviceViewerWidgetEditOptionsComponent,
+    DeviceViewerWidgetSelectComponent,
+    DeviceViewerWidgetsComponent,
     DeviceViewerComponent,
     HouseDetailsComponent,
     HouseEditComponent,

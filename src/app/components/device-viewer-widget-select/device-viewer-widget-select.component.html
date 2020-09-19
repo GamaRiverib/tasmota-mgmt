@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Add widget</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="save()" *ngIf="selected">
+        <ion-icon slot="icon-only" name="save-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-list-header>
+      <ion-label color="secondary">Select widget</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-select placeholder="Select one widget" [(ngModel)]="selected" (ionChange)="changeSelected()">
+        <ion-select-option *ngFor="let w of widgets">{{ w }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-list-header *ngIf="selected">
+      <ion-label color="secondary">Set widget options</ion-label>
+    </ion-list-header>
+    
+    <form #optionsForm></form>
+
+  </ion-list>
+
+</ion-content>
