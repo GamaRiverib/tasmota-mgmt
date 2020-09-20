@@ -23,7 +23,7 @@ class PowerDataImpl implements PowerData {
   state: string;
 
   constructor(private device: Device, index: string) {
-    this.index = index;
+    this.index = index === '0' ? '' : index;
     this.state = this.device.state[`POWER${this.index}`];
   }
 
@@ -69,7 +69,7 @@ export class PowerStateComponent implements Widget, OnInit {
   @Input() api: TasmotaApiService;
   @Input() device: Device;
   @Input() options: PowerStateWidgetOptions;
-  
+
   private powerList: PowerData[];
 
   constructor() {
@@ -86,7 +86,8 @@ export class PowerStateComponent implements Widget, OnInit {
     }
     this.powerList = [];
     const indexes = this.options && this.options.indexes ? this.options.indexes : ['', '1', '2', '3', '4'];
-    indexes.forEach(i => {
+    indexes.forEach(index => {
+      const i = index === '0' ? '' : index;
       if (this.device.state[`POWER${i}`]) {
        this.powerList.push(new PowerDataImpl(this.device, i));
       }

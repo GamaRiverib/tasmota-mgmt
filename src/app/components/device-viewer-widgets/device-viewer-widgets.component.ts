@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { DeviceViewSettings } from 'src/app/widgets/device-view-settings';
 import { WidgetSettings } from 'src/app/widgets/widget-settings';
+import { DeviceViewerWidgetEditOptionsComponent } from '../device-viewer-widget-edit-options/device-viewer-widget-edit-options.component';
 import { DeviceViewerWidgetSelectComponent } from '../device-viewer-widget-select/device-viewer-widget-select.component';
 
 @Component({
@@ -21,11 +22,20 @@ export class DeviceViewerWidgetsComponent implements OnInit {
 
   constructor(
     private modalController: ModalController,
+    private alertController: AlertController,
     private localStorage: LocalStorageService) { }
 
   async ngOnInit(): Promise<void> {
     this.deviceViewSettings = await this.localStorage.getDeviceViewSettings(this.deviceId);
     this.widgets = this.deviceViewSettings.widgets;
+  }
+
+  private async save(): Promise<void> {
+    try {
+      await this.localStorage.setDeviceViewSettings(this.deviceId, this.deviceViewSettings);
+    } catch (reason) {
+      console.log(reason);
+    }
   }
 
   toggleReorder(): void {
@@ -48,11 +58,7 @@ export class DeviceViewerWidgetsComponent implements OnInit {
         }
     }
     this.widgets.splice(to, 0, this.widgets.splice(from, 1)[0]);
-    try {
-      await this.localStorage.setDeviceViewSettings(this.deviceId, this.deviceViewSettings);
-    } catch (reason) {
-      console.log(reason);
-    }
+    this.save();
     ev.detail.complete();
   }
 
@@ -60,8 +66,20 @@ export class DeviceViewerWidgetsComponent implements OnInit {
     this.modalController.dismiss({ dismissed: true });
   }
 
-  editWidget(widget: WidgetSettings): void {
-    console.log('editWidget', widget);
+  async editWidget(widgetSettings: WidgetSettings): Promise<void> {
+    const widget = widgetSettings.widget;
+    const options = widgetSettings.options;
+    const modal = await this.modalController.create({
+      component: DeviceViewerWidgetEditOptionsComponent,
+      componentProps: { widget, options }
+    });
+    modal.onWillDismiss().then(response => {
+      if (response.role === 'saved' && response.data) {
+        widgetSettings.options = response.data;
+        this.save();
+      }
+    });
+    return modal.present();
   }
 
   async addWidget(): Promise<void> {
@@ -71,9 +89,35 @@ export class DeviceViewerWidgetsComponent implements OnInit {
     modal.onWillDismiss().then(response => {
       if (response.role === 'selected' && response.data) {
         this.widgets.push(response.data);
+        this.save();
       }
     });
     return modal.present();
+  }
+
+  async remove(index: number): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Remove Widget',
+      message: `Are you sure? <br/>Remove Widget ${this.widgets[index].widget}`,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Canceled', blah);
+          }
+        }, {
+          text: 'Okay',
+          handler: () => {
+            this.widgets.splice(index, 1);
+            this.save();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
 }

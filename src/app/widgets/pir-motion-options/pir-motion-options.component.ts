@@ -26,7 +26,7 @@ export class PirMotionOptionsComponent implements WidgetOptions, OnInit {
     this.names = [];
     this.selectedIndexes = [{
       selected: true,
-      index: '',
+      index: '0',
       name: 'PIR'
     }, {
       selected: false,
@@ -56,6 +56,23 @@ export class PirMotionOptionsComponent implements WidgetOptions, OnInit {
       indexes: this.indexes,
       names: this.names
     };
+  }
+
+  setOptions(options: PirMotionWidgetOptions): void {
+    this.stateOnPower = options.stateOnPower;
+    this.indexes = options.indexes || [];
+    this.names = options.names || [];
+
+    this.selectedIndexes.forEach((selectedIndex: IndexSelectedData) => {
+      const i = this.indexes.findIndex(j => j === selectedIndex.index);
+      selectedIndex.selected = i >= 0;
+    });
+    this.indexes.forEach((index: string) => {
+      const i = this.selectedIndexes.findIndex(j => j.index === index);
+      if (i < 0) {
+        this.selectedIndexes.push({ index, name: this.names[index] || `PIR ${index}`, selected: true });
+      }
+    });
   }
 
   indexSelected(item: IndexSelectedData): void {

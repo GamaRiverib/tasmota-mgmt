@@ -12,4 +12,5 @@ export interface Widget {
 // tslint:disable-next-line: no-empty-interface
 export interface WidgetOptions {
     getOptions(): any;
+    setOptions(options: any): void;
 }

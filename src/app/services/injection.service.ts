@@ -37,7 +37,7 @@ export class InjectionService {
     return this.getComponentRootNode(this.getRootViewContainer());
   }
 
-  appendComponent<T>(componentClass: Type<T>, options?: any, location?: Element, replace?: boolean): ComponentRef<any> {
+  appendComponent<T>(componentClass: Type<T>, options?: any, location?: Element, replace?: boolean): ComponentRef<T> {
     if (!options) {
       options = {};
     }

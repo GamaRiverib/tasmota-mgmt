@@ -1,3 +1,13 @@
-<p>
-  power-state-options works!
-</p>
+<ion-list>
+
+  <ion-item *ngFor="let item of selectedIndexes; let i = index">
+    <ion-label>{{ item.index }}</ion-label>
+    <ion-toggle
+      (ionChange)="indexSelected(item)"
+      [color]="item.selected ? 'secondary' : 'light'"
+      [(ngModel)]="item.selected">
+    </ion-toggle>
+  </ion-item>
+
+</ion-list>
+

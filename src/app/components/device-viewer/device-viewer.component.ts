@@ -43,7 +43,7 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
     this.widgets = [];
     let settings: DeviceViewSettings | null = await this.localStorage.getDeviceViewSettings(this.device.id);
     if (settings === null) {
-      settings = { general: {}, widgets: [{ widget: PowerStateComponent.name }] };
+      settings = { general: {}, widgets: [{ widget: PowerStateComponent.name, options: {} }] };
       try {
         this.localStorage.setDeviceViewSettings(this.device.id, settings);
       } catch (reason) {
@@ -51,17 +51,16 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
       }
     }
     this.widgets = settings.widgets || [{ widget: PowerStateComponent.name }];
-    this.widgets.forEach(c => this.appendWidget(c));
+    this.widgets.forEach(w => this.appendWidget(w));
   }
 
-  private async appendWidget(settings: WidgetSettings): Promise<void> {
-    const component: Type<Widget> = getWidgetComponent(settings.widget);
-    const componentRef = this.injection.appendComponent(component, {}, this.content.element.nativeElement);
-    const widget: Widget = componentRef.instance;
-    widget.api = this.api;
-    widget.device = this.device;
-    widget.options = settings.options || {};
-    this.api.onDeviceStateChange(d => widget.updateView(d));
+  private async appendWidget(widgetSettings: WidgetSettings): Promise<void> {
+    const component: Type<Widget> = getWidgetComponent(widgetSettings.widget);
+    const componentRef = this.injection.appendComponent<Widget>(component, {}, this.content.element.nativeElement);
+    componentRef.instance.api = this.api;
+    componentRef.instance.device = this.device;
+    componentRef.instance.options = widgetSettings.options;
+    this.api.onDeviceStateChange(d => componentRef.instance.updateView(d));
   }
 
 

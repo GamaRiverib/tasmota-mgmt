@@ -26,4 +26,9 @@ export class Dht11OptionsComponent implements WidgetOptions, OnInit {
     };
   }
 
+  setOptions(options: Dht11WidgetOptions): void {
+    this.twoCards = options.twoCards;
+    this.showLastUpdate = options.showLastUpdate;
+  }
+
 }
