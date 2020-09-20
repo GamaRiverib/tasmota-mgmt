@@ -94,8 +94,8 @@
       </ion-grid>
     </ion-card-content>
   </ion-card>
-  <ion-item *ngIf="options.showLastUpdate" class="ion-text-right">
-    <ion-text>
+  <ion-item *ngIf="options.showLastUpdate && options.twoCards">
+    <ion-text class="ion-text-center">
       <p class="last-update">Last update: <span>{{ lastUpdate | date: "medium" }}</span> </p>
     </ion-text>
   </ion-item>

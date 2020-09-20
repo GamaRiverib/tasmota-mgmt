@@ -1,3 +1,21 @@
-<p>
-  pir-motion-options works!
-</p>
+<ion-list>
+  <ion-item>
+    <ion-label>Pir sensor state on Power topic?</ion-label>
+    <ion-toggle
+      [color]="stateOnPower ? 'secondary' : 'light'"
+      [(ngModel)]="stateOnPower">
+    </ion-toggle>
+  </ion-item>
+
+  <ion-item *ngFor="let item of selectedIndexes; let i = index">
+    <ion-label slot="start">{{ item.index }}</ion-label>
+    <ion-input type="text" [(ngModel)]="item.name" (ionChange)="indexSelected(item)"></ion-input>
+    <ion-toggle
+      slot="end"
+      (ionChange)="indexSelected(item)"
+      [color]="item.selected ? 'secondary' : 'light'"
+      [(ngModel)]="item.selected">
+    </ion-toggle>
+  </ion-item>
+
+</ion-list>
