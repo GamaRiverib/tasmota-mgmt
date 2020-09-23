@@ -79,10 +79,11 @@ export class AuthService {
       const webIntent = win.plugins.intentShim;
       return new Promise<void>((resolve, reject) => {
         webIntent.onIntent((intent: any) => {
+          console.log({intent});
           if (!intent || !intent.data) {
             console.log('Web Intent Fails');
             clearTimeout(timeOut);
-            reject('Something was wrong with authentication process. Code 04');
+            return reject('Something was wrong with authentication process. Code 04');
           }
           const data: string = '?' + intent.data.split('?')[1];
           const params = new URLSearchParams(data);
@@ -93,7 +94,7 @@ export class AuthService {
             if (state !== responseState) {
               console.log('Response state not match');
               clearTimeout(timeOut);
-              reject('Something was wrong with authentication process. Code 05');
+              return reject('Something was wrong with authentication process. Code 05');
             }
             this.localStorage.removeAuthData();
             const authData: AuthData = {
@@ -125,12 +126,12 @@ export class AuthService {
                 if (response.status !== 200) {
                   console.log('Bad response', response.status, response.error);
                   clearTimeout(timeOut);
-                  reject('Something was wrong with authentication process. Code 06');
+                  return reject('Something was wrong with authentication process. Code 06');
                 }
                 if (!response.data || response.data === '') {
                   console.log('Body response empty', response.error, response.data);
                   clearTimeout(timeOut);
-                  reject('Something was wrong with authentication process. Code 07');
+                  return reject('Something was wrong with authentication process. Code 07');
                 }
                 const json = JSON.parse(response.data);
                 authData.access_token = json.access_token;
@@ -139,17 +140,17 @@ export class AuthService {
                 this.localStorage.setAuthData(authData);
                 clearTimeout(timeOut);
                 console.log({ auth: authData });
-                resolve();
+                return resolve();
               })
               .catch((reason: any) => {
                 console.log('HTTP Request Error', reason);
-                reject('Something was wrong with authentication process. Code 08');
+                return reject('Something was wrong with authentication process. Code 08');
             });
           }
         }, (error: any) => {
           console.log('WebIntent plugin fails', error);
           clearTimeout(timeOut);
-          reject('Something was wrong with authentication process. Code 02');
+          return reject('Something was wrong with authentication process. Code 02');
         });
       });
     } catch (error) {
@@ -201,11 +202,11 @@ export class AuthService {
           .then((response: HTTPResponse) => {
             if (response.status !== 200) {
               console.log('Bad response', response.status, response.error);
-              reject('Something was wrong with refresh token process. Code 01');
+              return reject('Something was wrong with refresh token process. Code 01');
             }
             if (!response.data || response.data === '') {
               console.log('Body response empty', response.error, response.data);
-              reject('Something was wrong with refresh token process. Code 02');
+              return reject('Something was wrong with refresh token process. Code 02');
             }
             const json = JSON.parse(response.data);
             this.accessToken = json.access_token;
@@ -213,14 +214,14 @@ export class AuthService {
             authData.expires_in = json.expires_in;
             this.localStorage.setAuthData(authData);
             console.log({ auth: authData });
-            resolve();
+            return resolve();
           })
           .catch((reason: any) => {
             console.log('HTTP Request Error', reason);
-            reject('Something was wrong with refresh token process. Code 03');
+            return reject('Something was wrong with refresh token process. Code 03');
         });
       } catch (error) {
-        reject('Something was wrong with refresh token process. Code 00');
+        return reject('Something was wrong with refresh token process. Code 00');
       }
     });
   }

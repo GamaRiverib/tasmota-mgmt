@@ -15,7 +15,11 @@
     "allowNavigation": [
       "127.0.0.1",
       "localhost:88",
-      "172.24.176.1:88"
-    ]
+      "172.24.176.1:88",
+      "localhost:8100"
+    ],
+    "hostname": "localhost",
+    "url": "http://172.24.176.1:8100",
+    "cleartext": true
   }
 }

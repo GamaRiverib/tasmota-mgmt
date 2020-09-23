@@ -10,7 +10,7 @@ export const SERVER_URL = 'http://localhost:8080';
 
 export const CLIENT_ID = 'iot.core.osue1cn';
 
-export const REDIRECT_URI = 'https://tasmota.gamarivera.dev/oauth2/';
+export const REDIRECT_URI = 'https://tasmota.gamarivera.dev/oauth2/r';
 
 export const CLIENT_SECRET = '1c259cfk0w8awyf9l4i6j1r6yu22zixj';
 
