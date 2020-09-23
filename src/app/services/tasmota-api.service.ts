@@ -25,6 +25,8 @@ export class TasmotaApiService {
   private static deviceConfig: { [ device: string ]: DeviceConfig } = {};
 
   private deviceStateChange: EventEmitter<Device> = new EventEmitter<Device>();
+  private deviceConfigChange: EventEmitter<{ deviceId: string, config: DeviceConfig }>
+    = new EventEmitter<{ deviceId: string, config: DeviceConfig }>();
 
   constructor(
     private httpClient: HttpClient,
@@ -80,6 +82,9 @@ export class TasmotaApiService {
   private onDeviceConfigChangedHandler(data: { device: string, config: any }): void {
     console.log('onDeviceConfigChanged', data);
     TasmotaApiService.deviceConfig[data.device] = Object.assign(TasmotaApiService.deviceConfig[data.device], data.config);
+    const deviceId = data.device;
+    const config = TasmotaApiService.deviceConfig[data.device];
+    this.deviceConfigChange.emit({ deviceId, config });
   }
 
   private onDeviceCommandResultHandler(data: { device: string, result: any }): void {
@@ -184,6 +189,10 @@ export class TasmotaApiService {
 
   public onDeviceStateChange(next: (device: Device) => void): void {
     this.deviceStateChange.subscribe(next);
+  }
+
+  public onDeviceConfigChange(next: (data: { deviceId: string, config: DeviceConfig }) => void): void {
+    this.deviceConfigChange.subscribe(next);
   }
 
 }

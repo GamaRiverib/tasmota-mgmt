@@ -9,6 +9,7 @@ import { DeviceViewSettings } from 'src/app/widgets/device-view-settings';
 import { PowerStateComponent } from 'src/app/widgets/power-state/power-state.component';
 import { Widget } from 'src/app/widgets/widget';
 import { WidgetSettings } from 'src/app/widgets/widget-settings';
+import { DeviceViewerInformationComponent } from '../device-viewer-information/device-viewer-information.component';
 import { DeviceViewerWidgetsComponent } from '../device-viewer-widgets/device-viewer-widgets.component';
 
 @Component({
@@ -68,6 +69,25 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
     this.modalController.dismiss({ dismissed: true });
   }
 
+  private async actionWidgetsHandler() {
+    const name = this.device.DeviceName || this.device.id;
+    const deviceId = this.device.id;
+    const modal = await this.modalController.create({
+      component: DeviceViewerWidgetsComponent,
+      componentProps: { name, deviceId }
+    });
+    return modal.present();
+  }
+
+  private async actionInformationHandler() {
+    const deviceId = this.device.id;
+    const modal = await this.modalController.create({
+      component: DeviceViewerInformationComponent,
+      componentProps: { deviceId }
+    });
+    return modal.present();
+  }
+
   async showOptions(): Promise<void> {
     console.log('showOptions');
     const actionSheet = await this.actionSheetController.create({
@@ -75,21 +95,11 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
       buttons: [{
         text: 'Widgets',
         icon: 'grid-outline',
-        handler: async () => {
-          const name = this.device.DeviceName || this.device.id;
-          const deviceId = this.device.id;
-          const modal = await this.modalController.create({
-            component: DeviceViewerWidgetsComponent,
-            componentProps: { name, deviceId }
-          });
-          return modal.present();
-        }
+        handler: this.actionWidgetsHandler.bind(this)
       }, {
         text: 'Information',
         icon: 'information-outline',
-        handler: () => {
-          console.log('Information clicked');
-        }
+        handler: this.actionInformationHandler.bind(this)
       }, {
         text: 'Configuration',
         icon: 'settings-outline',

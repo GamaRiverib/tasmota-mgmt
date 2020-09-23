@@ -1,0 +1,146 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Information</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="update()">
+        <ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-list *ngIf="cfg">
+    <ion-list-header>
+      <ion-label color="secondary">General</ion-label>
+    </ion-list-header>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">Program version</ion-label>
+      <ion-input type="text" [value]="cfg.StatusFWR.Version" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">Build date & time</ion-label>
+      <ion-input type="text" [value]="cfg.StatusFWR.BuildDateTime" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">Core/SDK version</ion-label>
+      <ion-input type="text" [value]="cfg.StatusFWR.Core + '/' + cfg.StatusFWR.SDK" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">Uptime</ion-label>
+      <ion-input type="text" [value]="cfg.StatusPRM.Uptime || cfg.StatusSTS.Uptime" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">Boot count</ion-label>
+      <ion-input type="text" [value]="cfg.StatusPRM.BootCount" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">Restart reason</ion-label>
+      <ion-input type="text" [value]="cfg.StatusPRM.RestartReason" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom" *ngFor="let f of cfg.Status.FriendlyName; let i = index">
+      <ion-label color="medium" position="stacked">Friendly name {{ i }}</ion-label>
+      <ion-input type="text" [value]="f" readonly></ion-input>
+    </ion-item>
+    
+    <ion-list-header>
+      <ion-label color="secondary">Network</ion-label>
+    </ion-list-header>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">AP1 SSId (RSSI)</ion-label>
+      <ion-input type="text" [value]="cfg.StatusSTS.Wifi.SSId + '(' + cfg.StatusSTS.Wifi.RSSI + '%, ' + cfg.StatusSTS.Wifi.Signal + ' dBm)'" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">Hostname</ion-label>
+      <ion-input type="text" [value]="cfg.StatusNET.Hostname" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">MAC address</ion-label>
+      <ion-input type="text" [value]="cfg.StatusNET.Mac" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">IP address (Wifi)</ion-label>
+      <ion-input type="text" [value]="cfg.StatusNET.IPAddress" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">Gateway</ion-label>
+      <ion-input type="text" [value]="cfg.StatusNET.Gateway" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">Subnet mask</ion-label>
+      <ion-input type="text" [value]="cfg.StatusNET.Subnetmask" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">DNS server</ion-label>
+      <ion-input type="text" [value]="cfg.StatusNET.DNSServer" readonly></ion-input>
+    </ion-item>
+
+    <ion-list-header>
+      <ion-label color="secondary">MQTT</ion-label>
+    </ion-list-header>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">Host</ion-label>
+      <ion-input type="text" [value]="cfg.StatusMQT.MqttHost" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">Port</ion-label>
+      <ion-input type="text" [value]="cfg.StatusMQT.MqttPort" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">User</ion-label>
+      <ion-input type="text" [value]="cfg.StatusMQT.MqttUser" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">Client</ion-label>
+      <ion-input type="text" [value]="cfg.StatusMQT.MqttClient" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">Topic</ion-label>
+      <ion-input type="text" [value]="cfg.StatusMQT.MqttClientMask" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">Group topic</ion-label>
+      <ion-input type="text" [value]="'cmnd/' + cfg.StatusPRM.GroupTopic + '/'" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">Full topic</ion-label>
+      <ion-input type="text" [value]="'cmnd/' + cfg.Status.Topic + '/'" readonly></ion-input>
+    </ion-item>
+
+    <ion-list-header>
+      <ion-label color="secondary">Hardware</ion-label>
+    </ion-list-header>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">Flash chip ID</ion-label>
+      <ion-input type="text" [value]="'0x' + cfg.StatusMEM.FlashChipId" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">Flash size</ion-label>
+      <ion-input type="text" [value]="cfg.StatusMEM.FlashSize + ' kB'" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">Program flash size</ion-label>
+      <ion-input type="text" [value]="cfg.StatusMEM.ProgramFlashSize + ' kB'" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">Program size</ion-label>
+      <ion-input type="text" [value]="cfg.StatusMEM.ProgramSize + ' kB'" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">Free program space</ion-label>
+      <ion-input type="text" [value]="cfg.StatusMEM.Free + ' kB'" readonly></ion-input>
+    </ion-item>
+    <ion-item class="ion-margin-bottom">
+      <ion-label color="medium" position="stacked">Free memory</ion-label>
+      <ion-input type="text" [value]="cfg.StatusMEM.Heap + ' kB'" readonly></ion-input>
+    </ion-item>
+
+  </ion-list>
+</ion-content>

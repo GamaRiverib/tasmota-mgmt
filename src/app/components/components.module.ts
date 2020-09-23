@@ -17,11 +17,14 @@ import { WidgetsModule } from '../widgets/widgets.module';
 import { DeviceViewerWidgetEditOptionsComponent } from './device-viewer-widget-edit-options/device-viewer-widget-edit-options.component';
 import { DeviceViewerWidgetsComponent } from './device-viewer-widgets/device-viewer-widgets.component';
 import { DeviceViewerWidgetSelectComponent } from './device-viewer-widget-select/device-viewer-widget-select.component';
+import { DeviceViewerInformationComponent } from './device-viewer-information/device-viewer-information.component';
 
 @NgModule({
   declarations: [
     AttributesViewerComponent,
     DeviceListComponent,
+    DeviceViewerComponent,
+    DeviceViewerInformationComponent,
     DeviceViewerWidgetEditOptionsComponent,
     DeviceViewerWidgetSelectComponent,
     DeviceViewerWidgetsComponent,
@@ -38,6 +41,8 @@ import { DeviceViewerWidgetSelectComponent } from './device-viewer-widget-select
   exports: [
     AttributesViewerComponent,
     DeviceListComponent,
+    DeviceViewerComponent,
+    DeviceViewerInformationComponent,
     DeviceViewerWidgetEditOptionsComponent,
     DeviceViewerWidgetSelectComponent,
     DeviceViewerWidgetsComponent,
