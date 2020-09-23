@@ -1,5 +1,5 @@
 {
-  "appId": "io.ionic.starter",
+  "appId": "dev.gamarivera.tasmota",
   "appName": "Tasmota Mgmt",
   "bundledWebRuntime": false,
   "npmClient": "npm",
@@ -9,5 +9,13 @@
       "launchShowDuration": 0
     }
   },
-  "cordova": {}
+  "cordova": {},
+  "server": {
+    "androidScheme": "http",
+    "allowNavigation": [
+      "127.0.0.1",
+      "localhost:88",
+      "172.24.176.1:88"
+    ]
+  }
 }

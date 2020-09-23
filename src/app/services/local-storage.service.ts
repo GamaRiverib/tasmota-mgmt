@@ -6,10 +6,19 @@ import { DeviceViewSettings } from '../widgets/device-view-settings';
 const KEY = 'TASMOTA::DATA';
 const KEY_SETTINGS = 'SETTINGS';
 const KEY_WIDGET_SETTINGS = 'WIDGET_SETTINGS';
+const KEY_AUTH_DATA = 'AUTH_DATA';
 
 export interface AppData {
   defaultHouse: string;
   favorites: string[];
+}
+
+export interface AuthData {
+  code_verifier?: string;
+  authorization_code?: string;
+  access_token?: string;
+  refresh_token?: string;
+  expires_in?: number;
 }
 
 @Injectable({
@@ -37,6 +46,13 @@ export class LocalStorageService {
     }
     const data = JSON.stringify(value);
     return localStorage.setItem(key, data);
+  }
+
+  private async removeItem(key: string): Promise<void> {
+    if (this.platform.is('hybrid')) {
+      return this.nativeStorage.remove(key);
+    }
+    return localStorage.removeItem(key);
   }
 
   async getDefaultHomeId(): Promise<string | undefined> {
@@ -117,6 +133,34 @@ export class LocalStorageService {
       }
       console.log(reason);
       throw new Error('Error getting device view settings');
+    }
+  }
+
+  async removeAuthData(): Promise<void> {
+    const key = `${KEY}::${KEY_AUTH_DATA}`;
+    return this.removeItem(key);
+  }
+
+  async setAuthData(data: AuthData): Promise<void> {
+    try {
+      const key = `${KEY}::${KEY_AUTH_DATA}`;
+      await this.setItem(key, data);
+    } catch (reason) {
+      throw new Error('Error saving auth data');
+    }
+  }
+
+  async getAuthData(): Promise<AuthData> {
+    const key = `${KEY}::${KEY_AUTH_DATA}`;
+    try {
+      const authData: AuthData = await this.getItem(key);
+      return authData;
+    } catch (reason) {
+      if (reason.code && reason.code === 2) {
+        return null;
+      }
+      console.log(reason);
+      throw new Error('Error getting auth data');
     }
   }
 }

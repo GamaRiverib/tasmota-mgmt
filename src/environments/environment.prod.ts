@@ -3,3 +3,11 @@ export const environment = {
 };
 
 export const SERVER_URL = 'http://localhost:8080';
+
+export const CLIENT_ID = '';
+
+export const REDIRECT_URI = '';
+
+export const CLIENT_SECRET = '';
+
+export const OAUTH_URL = '';

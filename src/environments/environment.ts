@@ -8,6 +8,14 @@ export const environment = {
 
 export const SERVER_URL = 'http://localhost:8080';
 
+export const CLIENT_ID = 'iot.core.osue1cn';
+
+export const REDIRECT_URI = 'https://tasmota.gamarivera.dev/oauth2/';
+
+export const CLIENT_SECRET = '1c259cfk0w8awyf9l4i6j1r6yu22zixj';
+
+export const OAUTH_URL = 'http://172.24.176.1:88/auth';
+
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

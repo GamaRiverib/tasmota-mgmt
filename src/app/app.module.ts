@@ -8,6 +8,8 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { WebIntent } from '@ionic-native/web-intent/ngx';
+import { HTTP } from '@ionic-native/http/ngx';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -30,6 +32,8 @@ const socketConfig: SocketIoConfig = { url: SERVER_URL, options: {} };
   providers: [
     StatusBar,
     SplashScreen,
+    WebIntent,
+    HTTP,
     NativeStorage,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
