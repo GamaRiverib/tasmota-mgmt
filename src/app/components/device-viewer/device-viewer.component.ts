@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, OnInit, Type, ViewChild, ViewContainerRef } from '@angular/core';
-import { ActionSheetController, IonContent, ModalController } from '@ionic/angular';
+import { ActionSheetController, AlertController, IonContent, ModalController } from '@ionic/angular';
+import { Command } from 'src/app/models/command';
 import { Device } from 'src/app/models/device';
 import { InjectionService } from 'src/app/services/injection.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
@@ -29,6 +30,7 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
     private api: TasmotaApiService,
     private localStorage: LocalStorageService,
     private modalController: ModalController,
+    private alertController: AlertController,
     private actionSheetController: ActionSheetController) {
       setTimeout(this.appendWidgets.bind(this));
     }
@@ -88,6 +90,35 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
     return modal.present();
   }
 
+  private async actionRestartHandler() {
+    const alert = await this.alertController.create({
+      header: 'Restart',
+      message: 'Are you sure?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Restart canceled');
+          }
+        }, {
+          text: 'Restart',
+          handler: async () => {
+            console.log('Restart');
+            const command: Command = {
+              command: 'Restart',
+              parameters: '1'
+            };
+            await this.api.sendCommandDevice(this.device.id, command);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
   async showOptions(): Promise<void> {
     console.log('showOptions');
     const actionSheet = await this.actionSheetController.create({
@@ -114,10 +145,8 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
         }
       }, {
         text: 'Restart',
-        icon: 'refresh-outline',
-        handler: () => {
-          console.log('Restart clicked');
-        }
+        icon: 'reload-outline',
+        handler: this.actionRestartHandler.bind(this)
       }, {
         text: 'Cancel',
         icon: 'close',

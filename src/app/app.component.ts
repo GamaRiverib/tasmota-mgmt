@@ -76,7 +76,6 @@ export class AppComponent implements OnInit {
         {
           text: 'Cancel',
           role: 'cancel',
-          cssClass: 'secondary',
           handler: (blah) => {
             console.log('Logout canceled');
           }
