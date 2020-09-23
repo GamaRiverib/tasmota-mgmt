@@ -27,7 +27,7 @@ export class DeviceViewerWidgetsComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.deviceViewSettings = await this.localStorage.getDeviceViewSettings(this.deviceId);
-    this.widgets = this.deviceViewSettings.widgets;
+    this.widgets = this.deviceViewSettings.widgets || [];
   }
 
   private async save(): Promise<void> {
@@ -88,6 +88,9 @@ export class DeviceViewerWidgetsComponent implements OnInit {
     });
     modal.onWillDismiss().then(response => {
       if (response.role === 'selected' && response.data) {
+        if (!this.widgets) {
+          this.widgets = [];
+        }
         this.widgets.push(response.data);
         this.save();
       }

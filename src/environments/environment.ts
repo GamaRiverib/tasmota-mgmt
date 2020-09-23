@@ -6,7 +6,7 @@ export const environment = {
   production: false
 };
 
-export const SERVER_URL = 'http://localhost:8080';
+export const SERVER_URL = 'http://172.24.176.1:8080';
 
 export const CLIENT_ID = 'iot.core.osue1cn';
 

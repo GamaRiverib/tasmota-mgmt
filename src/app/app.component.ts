@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
+import { LocalStorageService } from './services/local-storage.service';
 
 const LOGIN_PAGE_PATH = 'login';
 
@@ -50,6 +51,7 @@ export class AppComponent implements OnInit {
     private statusBar: StatusBar,
     private alertController: AlertController,
     private authService: AuthService,
+    private localStorage: LocalStorageService,
     private router: Router
   ) {
     this.initializeApp();
@@ -82,6 +84,7 @@ export class AppComponent implements OnInit {
           text: 'Logout',
           handler: async () => {
             await this.authService.logout();
+            await this.localStorage.clear(); // TODO: sync with server
             this.router.navigate([ LOGIN_PAGE_PATH ]);
           }
         }

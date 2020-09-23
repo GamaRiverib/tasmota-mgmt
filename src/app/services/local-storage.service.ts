@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Plugins } from '@capacitor/core';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { Platform } from '@ionic/angular';
 import { DeviceViewSettings } from '../widgets/device-view-settings';
+const { Storage } = Plugins;
 
 const KEY = 'TASMOTA::DATA';
 const KEY_SETTINGS = 'SETTINGS';
@@ -33,26 +35,46 @@ export class LocalStorageService {
   }
 
   private async getItem<T>(key: string): Promise<T> {
-    if (this.platform.is('hybrid')) {
+    if (this.platform.is('capacitor')) {
+      const { value } = await Storage.get({ key });
+      return JSON.parse(value) as T;
+    } else if (this.platform.is('hybrid')) {
       return this.nativeStorage.getItem(key);
     }
     const data = localStorage.getItem(key);
     return JSON.parse(data) as T;
   }
 
-  private async setItem<T>(key: string, value: T): Promise<void> {
-    if (this.platform.is('hybrid')) {
-      return this.nativeStorage.setItem(key, value);
+  private async setItem<T>(key: string, data: T): Promise<void> {
+    let value: string;
+    if (this.platform.is('capacitor')) {
+      value = JSON.stringify(data);
+      await Storage.set({ key, value });
+      return;
+    } else if (this.platform.is('hybrid')) {
+      return this.nativeStorage.setItem(key, data);
     }
-    const data = JSON.stringify(value);
-    return localStorage.setItem(key, data);
+    value = JSON.stringify(data);
+    return localStorage.setItem(key, value);
   }
 
   private async removeItem(key: string): Promise<void> {
-    if (this.platform.is('hybrid')) {
+    if (this.platform.is('capacitor')) {
+      await Storage.remove({ key });
+      return;
+    } else if (this.platform.is('hybrid')) {
       return this.nativeStorage.remove(key);
     }
     return localStorage.removeItem(key);
+  }
+
+  private async clearStorage(): Promise<void> {
+    if (this.platform.is('capacitor')) {
+      await Storage.clear();
+    } else if (this.platform.is('hybrid')) {
+      return this.nativeStorage.clear();
+    }
+    return localStorage.clear();
   }
 
   async getDefaultHomeId(): Promise<string | undefined> {
@@ -162,5 +184,9 @@ export class LocalStorageService {
       console.log(reason);
       throw new Error('Error getting auth data');
     }
+  }
+
+  async clear(): Promise<void> {
+    return this.clearStorage();
   }
 }
