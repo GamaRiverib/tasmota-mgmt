@@ -10,6 +10,7 @@ import { DeviceViewSettings } from 'src/app/widgets/device-view-settings';
 import { PowerStateComponent } from 'src/app/widgets/power-state/power-state.component';
 import { Widget } from 'src/app/widgets/widget';
 import { WidgetSettings } from 'src/app/widgets/widget-settings';
+import { DeviceViewerFirmwareUpgradeComponent } from '../device-viewer-firmware-upgrade/device-viewer-firmware-upgrade.component';
 import { DeviceViewerInformationComponent } from '../device-viewer-information/device-viewer-information.component';
 import { DeviceViewerWidgetsComponent } from '../device-viewer-widgets/device-viewer-widgets.component';
 
@@ -90,6 +91,15 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
     return modal.present();
   }
 
+  private async actionFirmwareUpgradeHandler() {
+    const deviceId = this.device.id;
+    const modal = await this.modalController.create({
+      component: DeviceViewerFirmwareUpgradeComponent,
+      componentProps: { deviceId }
+    });
+    return modal.present();
+  }
+
   private async actionRestartHandler() {
     const alert = await this.alertController.create({
       header: 'Restart',
@@ -140,9 +150,7 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
       }, {
         text: 'Firmware upgrade',
         icon: 'cloud-upload-outline',
-        handler: () => {
-          console.log('Firmware upgrade clicked');
-        }
+        handler: this.actionFirmwareUpgradeHandler.bind(this)
       }, {
         text: 'Restart',
         icon: 'reload-outline',
