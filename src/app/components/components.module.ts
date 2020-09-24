@@ -19,12 +19,14 @@ import { DeviceViewerWidgetsComponent } from './device-viewer-widgets/device-vie
 import { DeviceViewerWidgetSelectComponent } from './device-viewer-widget-select/device-viewer-widget-select.component';
 import { DeviceViewerInformationComponent } from './device-viewer-information/device-viewer-information.component';
 import { DeviceViewerFirmwareUpgradeComponent } from './device-viewer-firmware-upgrade/device-viewer-firmware-upgrade.component';
+import { DeviceViewerConfigurationComponent } from './device-viewer-configuration/device-viewer-configuration.component';
 
 @NgModule({
   declarations: [
     AttributesViewerComponent,
     DeviceListComponent,
     DeviceViewerComponent,
+    DeviceViewerConfigurationComponent,
     DeviceViewerFirmwareUpgradeComponent,
     DeviceViewerInformationComponent,
     DeviceViewerWidgetEditOptionsComponent,
@@ -44,6 +46,7 @@ import { DeviceViewerFirmwareUpgradeComponent } from './device-viewer-firmware-u
     AttributesViewerComponent,
     DeviceListComponent,
     DeviceViewerComponent,
+    DeviceViewerConfigurationComponent,
     DeviceViewerFirmwareUpgradeComponent,
     DeviceViewerInformationComponent,
     DeviceViewerWidgetEditOptionsComponent,

@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Configurations</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-list-header>
+      <ion-label color="secondary">Device configurations</ion-label>
+    </ion-list-header>
+    <ion-button size="large" expand="block" (click)="configureModule()" class="ion-margin">
+      Module
+    </ion-button>
+    <ion-button size="large" expand="block" (click)="configureWifi()" class="ion-margin">
+      Wifi
+    </ion-button>
+    <ion-button size="large" expand="block" (click)="configureMqtt()" class="ion-margin">
+      MQTT
+    </ion-button>
+    <ion-button size="large" expand="block" (click)="configureOther()" class="ion-margin">
+      Other
+    </ion-button>
+    <ion-button size="large" expand="block" (click)="configureOptions()" class="ion-margin">
+      Options
+    </ion-button>
+  </ion-list>
+</ion-content>

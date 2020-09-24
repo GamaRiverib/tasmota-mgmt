@@ -10,6 +10,7 @@ import { DeviceViewSettings } from 'src/app/widgets/device-view-settings';
 import { PowerStateComponent } from 'src/app/widgets/power-state/power-state.component';
 import { Widget } from 'src/app/widgets/widget';
 import { WidgetSettings } from 'src/app/widgets/widget-settings';
+import { DeviceViewerConfigurationComponent } from '../device-viewer-configuration/device-viewer-configuration.component';
 import { DeviceViewerFirmwareUpgradeComponent } from '../device-viewer-firmware-upgrade/device-viewer-firmware-upgrade.component';
 import { DeviceViewerInformationComponent } from '../device-viewer-information/device-viewer-information.component';
 import { DeviceViewerWidgetsComponent } from '../device-viewer-widgets/device-viewer-widgets.component';
@@ -91,6 +92,15 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
     return modal.present();
   }
 
+  private async actionConfigurationHandler() {
+    const deviceId = this.device.id;
+    const modal = await this.modalController.create({
+      component: DeviceViewerConfigurationComponent,
+      componentProps: { deviceId }
+    });
+    return modal.present();
+  }
+
   private async actionFirmwareUpgradeHandler() {
     const deviceId = this.device.id;
     const modal = await this.modalController.create({
@@ -144,9 +154,7 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
       }, {
         text: 'Configuration',
         icon: 'settings-outline',
-        handler: () => {
-          console.log('Configuration clicked');
-        }
+        handler: this.actionConfigurationHandler.bind(this)
       }, {
         text: 'Firmware upgrade',
         icon: 'cloud-upload-outline',
