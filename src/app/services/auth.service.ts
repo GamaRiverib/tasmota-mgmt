@@ -20,10 +20,15 @@ export class AuthService {
 
   private accessToken: string | null = null;
 
+  private refreshTokenTimeout: any;
+
   constructor(
     private localStorage: LocalStorageService,
     private webIntent: WebIntent,
-    private http: HTTP) { }
+    private http: HTTP) {
+      this.getAccessToken();
+      this.checkRefreshToken();
+    }
 
   private getQueryString(params: any): string {
     return Object.keys(params)
@@ -99,7 +104,8 @@ export class AuthService {
             this.localStorage.removeAuthData();
             const authData: AuthData = {
               code_verifier: codeVerifier,
-              authorization_code: code
+              authorization_code: code,
+              refresh_at: -1
             };
             this.localStorage.setAuthData(authData);
             // tslint:disable-next-line: variable-name
@@ -136,7 +142,10 @@ export class AuthService {
                 const json = JSON.parse(response.data);
                 authData.access_token = json.access_token;
                 authData.refresh_token = json.refresh_token;
-                authData.expires_in = json.expires_in;
+                authData.expires_in = json.expires_in || 600;
+                authData.refresh_at = Date.now() + authData.expires_in * 1000;
+                // TODO: refresh token
+                this.refreshTokenTimeout = setTimeout(this.refreshToken.bind(this), authData.expires_in * 1000);
                 this.localStorage.setAuthData(authData);
                 clearTimeout(timeOut);
                 console.log({ auth: authData });
@@ -159,6 +168,18 @@ export class AuthService {
     }
   }
 
+  private async checkRefreshToken(): Promise<void> {
+    const authData: AuthData = await this.localStorage.getAuthData();
+    if (authData && authData.refresh_at) {
+      if (Date.now() > authData.refresh_at) {
+        this.refreshToken();
+      } else if (!this.refreshTokenTimeout) {
+        const wait = authData.refresh_at - Date.now();
+        this.refreshTokenTimeout = setTimeout(this.refreshToken.bind(this), wait);
+      }
+    }
+  }
+
   async getAccessToken(): Promise<string | null> {
     if (this.accessToken === null) {
       try {
@@ -174,6 +195,10 @@ export class AuthService {
     return this.accessToken;
   }
 
+  getAccessTokenSync(): string | null {
+    return this.accessToken;
+  }
+
   async refreshToken(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
@@ -181,6 +206,8 @@ export class AuthService {
         if (!authData || !authData.access_token || !authData.refresh_token) {
           throw Error('User not authenticated');
         }
+        clearTimeout(this.refreshTokenTimeout);
+        this.refreshTokenTimeout = null;
         // tslint:disable-next-line: variable-name
         const client_id = CLIENT_ID;
         // tslint:disable-next-line: variable-name
@@ -211,7 +238,9 @@ export class AuthService {
             const json = JSON.parse(response.data);
             this.accessToken = json.access_token;
             authData.access_token = json.access_token;
-            authData.expires_in = json.expires_in;
+            authData.expires_in = json.expires_in || 600;
+            authData.refresh_at = Date.now() + authData.expires_in * 1000;
+            this.refreshTokenTimeout = setTimeout(this.refreshToken.bind(this), authData.expires_in * 1000) ;
             this.localStorage.setAuthData(authData);
             console.log({ auth: authData });
             return resolve();
@@ -246,6 +275,7 @@ export class AuthService {
 
   async logout(): Promise<void> {
     this.localStorage.removeAuthData();
+    clearTimeout(this.refreshTokenTimeout);
     this.accessToken = null;
   }
 }

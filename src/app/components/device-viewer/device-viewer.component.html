@@ -7,7 +7,7 @@
     </ion-buttons>
     <ion-title>{{ device.DeviceName || device.id }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="showOptions()">
+      <ion-button (click)="showOptions(event)">
         <ion-icon slot="icon-only" name="ellipsis-vertical-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
