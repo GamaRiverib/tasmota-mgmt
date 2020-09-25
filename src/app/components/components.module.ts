@@ -2,12 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { HouseDetailsComponent } from './house-details/house-details.component';
 import { HouseListComponent } from './house-list/house-list.component';
-import { RoomDetailsComponent } from './room-details/room-details.component';
 import { RoomDetailsDeviceInfoComponent } from './room-details-device-info/room-details-device-info.component';
 import { RoomDetailsDevicesSelectComponent } from './room-details-devices-select/room-details-devices-select.component';
-import { RoomListComponent } from './room-list/room-list.component';
 import { HouseEditComponent } from './house-edit/house-edit.component';
 import { RoomEditComponent } from './room-edit/room-edit.component';
 import { DeviceListComponent } from './device-list/device-list.component';
@@ -21,6 +18,13 @@ import { DeviceViewerInformationComponent } from './device-viewer-information/de
 import { DeviceViewerFirmwareUpgradeComponent } from './device-viewer-firmware-upgrade/device-viewer-firmware-upgrade.component';
 import { DeviceViewerConfigurationComponent } from './device-viewer-configuration/device-viewer-configuration.component';
 import { DeviceViewerActionsMenuComponent } from './device-viewer-actions-menu/device-viewer-actions-menu.component';
+// tslint:disable-next-line: max-line-length
+import { DeviceViewerConfigurationModuleComponent } from './device-viewer-configuration-module/device-viewer-configuration-module.component';
+import { DeviceViewerConfigurationMqttComponent } from './device-viewer-configuration-mqtt/device-viewer-configuration-mqtt.component';
+import { DeviceViewerConfigurationOptionsComponent } from './device-viewer-configuration-options/device-viewer-configuration-options.component';
+// tslint:disable-next-line: max-line-length
+import { DeviceViewerConfigurationOthersComponent } from './device-viewer-configuration-others/device-viewer-configuration-others.component';
+import { DeviceViewerConfigurationWifiComponent } from './device-viewer-configuration-wifi/device-viewer-configuration-wifi.component';
 
 @NgModule({
   declarations: [
@@ -29,20 +33,22 @@ import { DeviceViewerActionsMenuComponent } from './device-viewer-actions-menu/d
     DeviceViewerComponent,
     DeviceViewerActionsMenuComponent,
     DeviceViewerConfigurationComponent,
+    DeviceViewerConfigurationModuleComponent,
+    DeviceViewerConfigurationMqttComponent,
+    DeviceViewerConfigurationOptionsComponent,
+    DeviceViewerConfigurationOthersComponent,
+    DeviceViewerConfigurationWifiComponent,
     DeviceViewerFirmwareUpgradeComponent,
     DeviceViewerInformationComponent,
     DeviceViewerWidgetEditOptionsComponent,
     DeviceViewerWidgetSelectComponent,
     DeviceViewerWidgetsComponent,
     DeviceViewerComponent,
-    HouseDetailsComponent,
     HouseEditComponent,
     HouseListComponent,
-    RoomDetailsComponent,
     RoomDetailsDeviceInfoComponent,
     RoomDetailsDevicesSelectComponent,
-    RoomEditComponent,
-    RoomListComponent
+    RoomEditComponent
   ],
   exports: [
     AttributesViewerComponent,
@@ -50,20 +56,22 @@ import { DeviceViewerActionsMenuComponent } from './device-viewer-actions-menu/d
     DeviceViewerComponent,
     DeviceViewerActionsMenuComponent,
     DeviceViewerConfigurationComponent,
+    DeviceViewerConfigurationModuleComponent,
+    DeviceViewerConfigurationMqttComponent,
+    DeviceViewerConfigurationOptionsComponent,
+    DeviceViewerConfigurationOthersComponent,
+    DeviceViewerConfigurationWifiComponent,
     DeviceViewerFirmwareUpgradeComponent,
     DeviceViewerInformationComponent,
     DeviceViewerWidgetEditOptionsComponent,
     DeviceViewerWidgetSelectComponent,
     DeviceViewerWidgetsComponent,
     DeviceViewerComponent,
-    HouseDetailsComponent,
     HouseEditComponent,
     HouseListComponent,
-    RoomDetailsComponent,
     RoomDetailsDeviceInfoComponent,
     RoomDetailsDevicesSelectComponent,
-    RoomEditComponent,
-    RoomListComponent
+    RoomEditComponent
   ],
   imports: [
     CommonModule,

@@ -1,6 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { TasmotaApiService } from 'src/app/services/tasmota-api.service';
+import { DeviceViewerConfigurationModuleComponent } from '../device-viewer-configuration-module/device-viewer-configuration-module.component';
+import { DeviceViewerConfigurationMqttComponent } from '../device-viewer-configuration-mqtt/device-viewer-configuration-mqtt.component';
+import { DeviceViewerConfigurationOptionsComponent } from '../device-viewer-configuration-options/device-viewer-configuration-options.component';
+import { DeviceViewerConfigurationOthersComponent } from '../device-viewer-configuration-others/device-viewer-configuration-others.component';
+import { DeviceViewerConfigurationWifiComponent } from '../device-viewer-configuration-wifi/device-viewer-configuration-wifi.component';
 
 @Component({
   selector: 'app-device-viewer-configuration',
@@ -12,7 +17,6 @@ export class DeviceViewerConfigurationComponent implements OnInit {
   @Input() deviceId: string;
 
   constructor(
-    private api: TasmotaApiService,
     private modalController: ModalController) { }
 
   ngOnInit() {}
@@ -22,23 +26,48 @@ export class DeviceViewerConfigurationComponent implements OnInit {
   }
 
   async configureModule(): Promise<void> {
-    console.log('configureModule');
+    const deviceId = this.deviceId;
+    const modal = await this.modalController.create({
+      component: DeviceViewerConfigurationModuleComponent,
+      componentProps: { deviceId }
+    });
+    return await modal.present();
   }
 
   async configureWifi(): Promise<void> {
-    console.log('configureWifi');
+    const deviceId = this.deviceId;
+    const modal = await this.modalController.create({
+      component: DeviceViewerConfigurationWifiComponent,
+      componentProps: { deviceId }
+    });
+    return await modal.present();
   }
 
   async configureMqtt(): Promise<void> {
-    console.log('configureMqtt');
+    const deviceId = this.deviceId;
+    const modal = await this.modalController.create({
+      component: DeviceViewerConfigurationMqttComponent,
+      componentProps: { deviceId }
+    });
+    return await modal.present();
   }
 
   async configureOther(): Promise<void> {
-    console.log('configureOther');
+    const deviceId = this.deviceId;
+    const modal = await this.modalController.create({
+      component: DeviceViewerConfigurationOthersComponent,
+      componentProps: { deviceId }
+    });
+    return await modal.present();
   }
 
   async configureOptions(): Promise<void> {
-    console.log('configureOptions');
+    const deviceId = this.deviceId;
+    const modal = await this.modalController.create({
+      component: DeviceViewerConfigurationOptionsComponent,
+      componentProps: { deviceId }
+    });
+    return await modal.present();
   }
 
 }

@@ -38,10 +38,10 @@ export class DeviceViewerInformationComponent implements OnInit {
 
   async doRefresh(ev: any): Promise<void> {
     if (this.deviceId) {
+      const timeout = setTimeout(ev.target.complete, 3000);
       this.cfg = await this.api.getDeviceConfig(this.deviceId, true);
+      clearTimeout(timeout);
       ev.target.complete();
-
-      setTimeout(ev.target.complete, 3000);
     } else {
       ev.target.complete();
     }

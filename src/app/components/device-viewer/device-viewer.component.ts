@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, OnInit, Type, ViewChild, ViewContainerRef } from '@angular/core';
-import { ActionSheetController, IonContent, ModalController, PopoverController } from '@ionic/angular';
+import { IonContent, ModalController, PopoverController } from '@ionic/angular';
+import { Command } from 'src/app/models/command';
 import { Device } from 'src/app/models/device';
 import { InjectionService } from 'src/app/services/injection.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
@@ -77,6 +78,22 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
       backdropDismiss: true
     });
     return popover.present();
+  }
+
+  async doRefresh(ev: any): Promise<void> {
+    let timeout: any;
+    try {
+      timeout = setTimeout(ev.target.complete, 3000);
+      const command: Command = {
+        command: 'State'
+      };
+      this.api.sendCommandDevice(this.device.id, command);
+      clearTimeout(timeout);
+      ev.target.complete();
+    } catch (reason) {
+      clearTimeout(timeout);
+      ev.target.complete();
+    }
   }
 
 }

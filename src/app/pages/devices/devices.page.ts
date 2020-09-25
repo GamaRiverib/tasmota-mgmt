@@ -32,4 +32,22 @@ export class DevicesPage implements OnInit {
     }
   }
 
+  async doRefresh(ev: any): Promise<void> {
+    let timeout: any;
+    try {
+      timeout = setTimeout(ev.target.complete, 3000);
+      this.devices = await this.api.getDevices(true);
+      clearTimeout(timeout);
+      ev.target.complete();
+    } catch (reason) {
+      clearTimeout(timeout);
+      ev.target.complete();
+      if (reason instanceof HttpErrorResponse) {
+        if (reason.status === 401) {
+          this.router.navigate([ LOGIN_PAGE_PATH ]);
+        }
+      }
+    }
+  }
+
 }
