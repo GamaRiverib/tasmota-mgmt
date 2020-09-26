@@ -91,17 +91,9 @@ export class TasmotaApiService {
 
   private onDeviceCommandResultHandler(data: { device: string, result: any }): void {
     console.log('onDeviceCommandResult', data);
-    if (TasmotaApiService.devices) {
-      const index = TasmotaApiService.devices.findIndex(d => d.id === data.device);
-      if (index < 0) {
-        return;
-      }
-      TasmotaApiService.devices[index].state = Object.assign(TasmotaApiService.devices[index].state || {}, data.result);
-      this.deviceStateChange.emit(TasmotaApiService.devices[index]);
-      const deviceId = data.device;
-      const result = data.result;
-      this.commandResultEvent.emit({ deviceId, result });
-    }
+    const deviceId = data.device;
+    const result = data.result;
+    this.commandResultEvent.emit({ deviceId, result });
   }
 
   public async getHouses(): Promise<House[]> {

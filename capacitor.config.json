@@ -16,8 +16,6 @@
       "172.24.176.1:88",
       "172.24.176.1:8080"
     ],
-    "hostname": "localhost",
-    "url": "http://172.24.176.1:8100",
-    "cleartext": true
+    "hostname": "localhost"
   }
 }
