@@ -8,7 +8,7 @@ export const environment = {
 
 export const SERVER_URL = 'http://172.24.176.1:88/api/tasmota';
 
-export const WS_SERVER_URL = 'http://172.24.176.1:89';
+export const WS_SERVER_URL = 'http://172.24.176.1:88';
 
 export const CLIENT_ID = 'iot.core.osue1cn';
 
