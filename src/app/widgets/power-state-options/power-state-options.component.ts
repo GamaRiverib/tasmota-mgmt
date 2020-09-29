@@ -16,7 +16,7 @@ export class PowerStateOptionsComponent implements WidgetOptions, OnInit {
 
   indexes?: string[];
 
-  private selectedIndexes: IndexSelectedData[];
+  selectedIndexes: IndexSelectedData[];
 
   constructor() {
     this.indexes = [];

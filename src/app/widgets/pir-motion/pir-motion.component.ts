@@ -27,7 +27,7 @@ export class PirMotionComponent implements Widget, OnInit {
   @Input() device: Device;
   @Input() options: PirMotionWidgetOptions;
 
-  private sensors: SensorData[];
+  sensors: SensorData[];
 
   constructor() { }
 

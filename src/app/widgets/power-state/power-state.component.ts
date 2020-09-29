@@ -70,7 +70,7 @@ export class PowerStateComponent implements Widget, OnInit {
   @Input() device: Device;
   @Input() options: PowerStateWidgetOptions;
 
-  private powerList: PowerData[];
+  powerList: PowerData[];
 
   constructor() {
 

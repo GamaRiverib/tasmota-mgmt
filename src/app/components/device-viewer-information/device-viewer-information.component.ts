@@ -14,7 +14,7 @@ export class DeviceViewerInformationComponent implements OnInit {
 
   @Input() deviceId: string;
 
-  private cfg: DeviceConfig;
+  cfg: DeviceConfig;
 
   constructor(
     private api: TasmotaApiService,

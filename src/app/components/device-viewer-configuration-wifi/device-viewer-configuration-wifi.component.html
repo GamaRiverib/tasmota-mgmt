@@ -15,29 +15,27 @@
       <ion-label color="secondary">Access Point</ion-label>
     </ion-list-header>
 
-    <ion-item class="ion-padding-bottom">
+    <ion-item>
       <ion-label color="medium" position="stacked">Selected Access Point</ion-label>
       <ion-select [(ngModel)]="config.AP">
-        <ion-select-option value="">Unknown</ion-select-option>
         <ion-select-option value="1">1</ion-select-option>
         <ion-select-option value="2">2</ion-select-option>
       </ion-select>
     </ion-item>
 
-    <ion-item class="ion-padding-bottom">
+    <ion-item>
       <ion-label color="medium" position="stacked">SSId 1</ion-label>
       <ion-input type="text" [(ngModel)]="config.SSId1"></ion-input>
     </ion-item>
 
-    <ion-item class="ion-padding-bottom">
+    <ion-item>
       <ion-label color="medium" position="stacked">SSId 2</ion-label>
       <ion-input type="text" [(ngModel)]="config.SSId2"></ion-input>
     </ion-item>
 
-    <ion-item class="ion-padding-bottom">
+    <ion-item>
       <ion-label color="medium" position="stacked">WiFi Config Mode</ion-label>
       <ion-select [(ngModel)]="config.WifiConfig">
-        <ion-select-option value="">Unknown</ion-select-option>
         <ion-select-option value="0">Disabled</ion-select-option>
         <ion-select-option value="1">Smart Config</ion-select-option>
         <ion-select-option value="2">Wi-Fi Manager</ion-select-option>
@@ -53,42 +51,41 @@
       <ion-label color="secondary">Web Server</ion-label>
     </ion-list-header>
 
-    <ion-item class="ion-padding-bottom">
+    <ion-item>
       <ion-label color="medium" position="stacked">Web Server Mode</ion-label>
       <ion-select [(ngModel)]="config.WebServer">
-        <ion-select-option value="">Unknown</ion-select-option>
         <ion-select-option value="0">Stop</ion-select-option>
         <ion-select-option value="1">User mode</ion-select-option>
         <ion-select-option value="2">Admin mode</ion-select-option>
       </ion-select>
     </ion-item>
 
-    <ion-item class="ion-padding-bottom">
+    <ion-item>
       <ion-label color="medium" position="stacked">Hostname</ion-label>
       <ion-input type="text" max-length="32" [(ngModel)]="config.Hostname"></ion-input>
     </ion-item>
 
-    <ion-item class="ion-padding-bottom">
+    <ion-item>
       <ion-label color="medium" position="stacked">IP Address</ion-label>
       <ion-input type="text" [(ngModel)]="config.IPAddress1"></ion-input>
     </ion-item>
 
-    <ion-item class="ion-padding-bottom">
+    <ion-item>
       <ion-label color="medium" position="stacked">Gateway IP Address</ion-label>
       <ion-input type="text" [(ngModel)]="config.IPAddress2"></ion-input>
     </ion-item>
 
-    <ion-item class="ion-padding-bottom">
+    <ion-item>
       <ion-label color="medium" position="stacked">Subnet mask</ion-label>
       <ion-input type="text" [(ngModel)]="config.IPAddress3"></ion-input>
     </ion-item>
 
-    <ion-item class="ion-padding-bottom">
+    <ion-item>
       <ion-label color="medium" position="stacked">DNS Server</ion-label>
       <ion-input type="text" [(ngModel)]="config.IPAddress4"></ion-input>
     </ion-item>
 
-    <ion-item class="ion-padding-bottom">
+    <ion-item>
       <ion-label color="medium" position="stacked">CORS</ion-label>
       <ion-input type="text" max-length="32" [(ngModel)]="config.CORS"></ion-input>
     </ion-item>
@@ -97,9 +94,9 @@
       <ion-label color="secondary">Options</ion-label>
     </ion-list-header>
 
-    <ion-item class="ion-padding-bottom">
+    <ion-item>
       <ion-label color="medium">mDNS Service</ion-label>
-      <ion-toggle [(ngModel)]="config.mDNS" [color]="config.mDNS == '1' ? 'secondary' : 'light'"></ion-toggle>
+      <ion-toggle [(ngModel)]="config.mDNS" [color]="config.mDNS ? 'secondary' : 'light'"></ion-toggle>
     </ion-item>
 
   </ion-list>

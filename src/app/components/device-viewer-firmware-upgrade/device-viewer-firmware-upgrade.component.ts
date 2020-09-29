@@ -13,9 +13,9 @@ const DEFAULT_OTA_URL = 'http://ota.tasmota.com/tasmota/release/tasmota.bin';
 export class DeviceViewerFirmwareUpgradeComponent implements OnInit {
 
   @Input() deviceId: string;
-  private url: string;
-  private miminal: string;
-  private firmware: string;
+  url: string;
+  minimal: string;
+  firmware: string;
 
   constructor(
     private api: TasmotaApiService,
@@ -64,7 +64,7 @@ export class DeviceViewerFirmwareUpgradeComponent implements OnInit {
   }
 
   async upgradeByFile(): Promise<void> {
-    console.log('upgrade by file', this.miminal, this.firmware);
+    console.log('upgrade by file', this.minimal, this.firmware);
   }
 
 }

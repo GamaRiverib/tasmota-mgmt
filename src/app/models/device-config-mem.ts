@@ -6,5 +6,6 @@ export class DeviceStatusMEM {
     FlashChipId: string;
     FlashFrequency: number;
     FlashMode: number;
+    FlashSize: string;
     Features: string[];
 }

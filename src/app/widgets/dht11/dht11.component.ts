@@ -20,11 +20,11 @@ export class Dht11Component implements Widget, OnInit {
   @Input() device: Device;
   @Input() options: Dht11WidgetOptions;
 
-  private temperature: string;
-  private tempUnit: string;
-  private humidity: string;
+  temperature: string;
+  tempUnit: string;
+  humidity: string;
 
-  private lastUpdate: Date;
+  lastUpdate: Date;
 
   constructor() {
     if (this.options === undefined) {

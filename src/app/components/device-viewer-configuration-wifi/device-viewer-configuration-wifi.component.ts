@@ -13,7 +13,7 @@ export class DeviceViewerConfigurationWifiComponent implements OnInit {
 
   @Input() deviceId: string;
 
-  private config: any = {};
+  config: any = {};
 
   constructor(
     private api: TasmotaApiService,
@@ -48,12 +48,12 @@ export class DeviceViewerConfigurationWifiComponent implements OnInit {
         this.config.IPAddress4 = cfg.StatusNET.DNSServer;
       }
 
-      console.log({config: this.config});
-
       // TODO: query cors
       const corsQueryCommand: Command = { command: 'CORS' };
       this.api.sendCommandDevice(this.deviceId, corsQueryCommand);
       // TODO: query setoption55, 56 and 57
+      const mDnsQueryCommand: Command = { command: 'SetOption55' };
+      this.api.sendCommandDevice(this.deviceId, mDnsQueryCommand);
     } catch (reason) {
       console.log(reason);
     }
@@ -61,8 +61,13 @@ export class DeviceViewerConfigurationWifiComponent implements OnInit {
 
   private commandResultHandler(deviceId: string, result: any): void {
     if (deviceId === this.deviceId) {
-      if (result && result.CORS) {
-        this.config.CORS = result.CORS;
+      if (result) {
+        if (result.CORS) {
+          this.config.CORS = result.CORS;
+        }
+        if (result.SetOption55) {
+          this.config.mDNS = result.SetOption55.toLowerCase() === 'on' || result.SetOption55.toString() === '1';
+        }
       }
     }
   }

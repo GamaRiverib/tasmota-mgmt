@@ -18,7 +18,7 @@ export class PirMotionOptionsComponent implements WidgetOptions, OnInit {
   stateOnPower: boolean;
   indexes?: string[];
   names?: string[];
-  private selectedIndexes: IndexSelectedData[];
+  selectedIndexes: IndexSelectedData[];
 
   constructor() {
     this.stateOnPower = true;

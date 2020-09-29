@@ -22,7 +22,7 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
   @Input() device: Device;
   @ViewChild(IonContent, { read: ViewContainerRef }) content: ViewContainerRef;
 
-  private widgets: WidgetSettings[];
+  widgets: WidgetSettings[];
 
   constructor(
     private injection: InjectionService,

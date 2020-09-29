@@ -14,9 +14,7 @@
     "androidScheme": "http",
     "allowNavigation": [
       "172.24.176.1:88",
-      "172.24.176.1:8080"
-    ],
-    "url": "http://172.24.176.1:8100",
-    "cleartext": true
+      "gamarivera.dev:84"
+    ]
   }
 }
