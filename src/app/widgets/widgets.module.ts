@@ -8,11 +8,15 @@ import { PirMotionComponent } from './pir-motion/pir-motion.component';
 import { Dht11OptionsComponent } from './dht11-options/dht11-options.component';
 import { PirMotionOptionsComponent } from './pir-motion-options/pir-motion-options.component';
 import { PowerStateOptionsComponent } from './power-state-options/power-state-options.component';
+import { Dht11RowComponent } from './dht11-row/dht11-row.component';
+import { Dht11RowOptionsComponent } from './dht11-row-options/dht11-row-options.component';
 
 @NgModule({
   declarations: [
     Dht11Component,
     Dht11OptionsComponent,
+    Dht11RowComponent,
+    Dht11RowOptionsComponent,
     PirMotionComponent,
     PirMotionOptionsComponent,
     PowerStateComponent,
@@ -21,6 +25,8 @@ import { PowerStateOptionsComponent } from './power-state-options/power-state-op
   exports: [
     Dht11Component,
     Dht11OptionsComponent,
+    Dht11RowComponent,
+    Dht11RowOptionsComponent,
     PirMotionComponent,
     PirMotionOptionsComponent,
     PowerStateComponent,

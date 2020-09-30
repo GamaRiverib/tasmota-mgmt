@@ -20,7 +20,7 @@
     </ion-list-header>
     <ion-item>
       <ion-select placeholder="Select one widget" [(ngModel)]="selected" (ionChange)="changeSelected()">
-        <ion-select-option *ngFor="let w of widgets">{{ w }}</ion-select-option>
+        <ion-select-option *ngFor="let w of widgets" value="w.value">{{ w.name }}</ion-select-option>
       </ion-select>
     </ion-item>
 

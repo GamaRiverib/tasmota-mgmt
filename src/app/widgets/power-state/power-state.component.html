@@ -8,14 +8,14 @@
     </ion-label>
   </ion-item>
   <ion-item *ngFor="let power of powerList" class="ion-padding-bottom" (click)="toggle(power)">
-    <ion-icon size="large" slot="start" name="power-outline"
-      [color]="power.switch ? 'success': 'danger'">
+    <ion-icon size="large" slot="start" name="bulb-outline"
+      [color]="power.on ? 'warning': 'medium'">
     </ion-icon>
     <ion-label>
       <h1>{{ power.name }}</h1>
     </ion-label>
-    <ion-icon size="large" slot="end" name="bulb-outline"
-      [color]="power.on ? 'warning': 'medium'">
+    <ion-icon size="large" slot="end" name="power-outline"
+      [color]="power.switch ? 'success': 'danger'">
     </ion-icon>
   </ion-item>
 </ion-list>

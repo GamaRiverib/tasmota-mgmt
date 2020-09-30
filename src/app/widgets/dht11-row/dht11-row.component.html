@@ -1,0 +1,34 @@
+<ion-list>
+  <ion-list-header>
+    <ion-label color="secondary">DHT11 Sensor</ion-label>
+  </ion-list-header>
+  <ion-item *ngIf="!temperature && !humidity">
+    <ion-label class="ion-text-center">
+      No DHT11 sensor
+    </ion-label>
+  </ion-item>
+  <ion-item *ngIf="temperature">
+    <ion-icon size="large" slot="start" name="thermometer-outline"></ion-icon>
+    <ion-label>
+      <h1>Temperature</h1>
+    </ion-label>
+    <ion-note slot="end">
+      <h1>{{ temperature }}°{{ tempUnit }}</h1>
+    </ion-note>
+  </ion-item>
+  <ion-item *ngIf="humidity">
+    <ion-icon size="large" slot="start" name="water-outline"></ion-icon>
+    <ion-label>
+      <h1>Humidity</h1>
+    </ion-label>
+    <ion-note slot="end">
+      <h1>{{ humidity }}%</h1>
+    </ion-note>
+  </ion-item>
+  <ion-item *ngIf="options.showLastUpdate">
+    <ion-text>
+      <p class="last-update">Last update: <span>{{ lastUpdate | date: "medium" }}</span> </p>
+    </ion-text>
+  </ion-item>
+</ion-list>
+

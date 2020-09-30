@@ -13,7 +13,7 @@ export class DeviceViewerWidgetSelectComponent implements OnInit {
 
   selected: string;
   options: any;
-  widgets: string[];
+  widgets: { name: string, value: string }[];
 
   @ViewChild('optionsForm', { read: ViewContainerRef, static: false }) content: ViewContainerRef;
   private formOptions: ComponentRef<any>;

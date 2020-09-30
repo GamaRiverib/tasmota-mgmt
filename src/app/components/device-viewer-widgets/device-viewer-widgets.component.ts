@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { getWidgetNames } from 'src/app/widgets';
 import { DeviceViewSettings } from 'src/app/widgets/device-view-settings';
 import { WidgetSettings } from 'src/app/widgets/widget-settings';
 import { DeviceViewerWidgetEditOptionsComponent } from '../device-viewer-widget-edit-options/device-viewer-widget-edit-options.component';
@@ -19,6 +20,7 @@ export class DeviceViewerWidgetsComponent implements OnInit {
   private deviceViewSettings: DeviceViewSettings;
   reorderDisabled = true;
   widgets: WidgetSettings[];
+  widgetsFriendlyNames: { name: string, value: string}[];
 
   constructor(
     private modalController: ModalController,
@@ -28,6 +30,7 @@ export class DeviceViewerWidgetsComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.deviceViewSettings = await this.localStorage.getDeviceViewSettings(this.deviceId);
     this.widgets = this.deviceViewSettings.widgets || [];
+    this.widgetsFriendlyNames = getWidgetNames();
   }
 
   private async save(): Promise<void> {
@@ -64,6 +67,14 @@ export class DeviceViewerWidgetsComponent implements OnInit {
 
   dismiss() {
     this.modalController.dismiss({ dismissed: true });
+  }
+
+  getWidgetFriendlyName(widget: string): string {
+    const widgetFriendlyName = this.widgetsFriendlyNames.find(w => w.value === widget);
+    if (widgetFriendlyName === undefined) {
+      return widget;
+    }
+    return widgetFriendlyName.name;
   }
 
   async editWidget(widgetSettings: WidgetSettings): Promise<void> {

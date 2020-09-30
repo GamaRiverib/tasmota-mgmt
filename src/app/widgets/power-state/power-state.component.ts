@@ -81,15 +81,15 @@ export class PowerStateComponent implements Widget, OnInit {
   }
 
   public updateView(device: Device): void {
-    if (!this.device || !this.device.state) {
+    if (!device || !device.state) {
       return;
     }
     this.powerList = [];
     const indexes = this.options && this.options.indexes ? this.options.indexes : ['', '1', '2', '3', '4'];
     indexes.forEach(index => {
       const i = index === '0' ? '' : index;
-      if (this.device.state[`POWER${i}`]) {
-       this.powerList.push(new PowerDataImpl(this.device, i));
+      if (device.state[`POWER${i}`]) {
+       this.powerList.push(new PowerDataImpl(device, i));
       }
     });
   }
