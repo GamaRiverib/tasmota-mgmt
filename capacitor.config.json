@@ -11,10 +11,10 @@
   },
   "cordova": {},
   "server": {
-    "androidScheme": "http",
-    "allowNavigation": [
-      "172.24.176.1:88",
-      "gamarivera.dev:84"
-    ]
+    "androidScheme": "https",
+    "allowNavigation": []
+  },
+  "android": {
+    "allowMixedContent": true
   }
 }

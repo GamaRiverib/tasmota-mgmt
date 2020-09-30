@@ -5,8 +5,10 @@ import { Room, RoomDevice } from '../models/room';
 import { Device } from '../models/device';
 import { DeviceConfig } from '../models/device-config';
 import { Command } from '../models/command';
-import { SERVER_URL } from 'src/environments/environment';
+import { SERVER_URL, WS_SERVER_URL } from 'src/environments/environment';
 import { Socket } from 'ngx-socket-io';
+import { SocketIoConfig, ɵa as SocketFactory } from 'ngx-socket-io';
+import { AuthService } from './auth.service';
 
 const SOCKET_EVENTS = {
   DEVICE_CONNECTED: 'device-connected',
@@ -32,11 +34,35 @@ export class TasmotaApiService {
 
   constructor(
     private httpClient: HttpClient,
+    private authService: AuthService,
     private socket: Socket) {
       this.initializeSocket();
   }
 
-  private initializeSocket(): void {
+  private async initializeSocket(): Promise<void> {
+    console.log('initialize web socket client');
+    if (this.socket) {
+      this.socket.removeAllListeners();
+      this.socket.disconnect();
+      this.socket = null;
+    }
+    const token = await this.authService.getAccessToken();
+    if (!token) {
+      console.log('Not authenticated');
+      return;
+    }
+    const config: SocketIoConfig = {
+      url: WS_SERVER_URL,
+      // options: { extraHeaders: { Authorization: token } }
+      options: {
+        transportOptions: {
+          polling: {
+            extraHeaders: { Authorization: `Bearer ${token}` }
+          }
+        }
+      }
+    };
+    this.socket = SocketFactory(config);
     this.socket.connect();
     const name = `tasmota-mgmt-app-${Math.random() * 10000}`;
     this.socket.emit('client-name', { name });
@@ -45,6 +71,20 @@ export class TasmotaApiService {
     this.socket.on(SOCKET_EVENTS.DEVICE_STATE_CHANGED, this.onDeviceStateChangedHandler.bind(this));
     this.socket.on(SOCKET_EVENTS.DEVICE_CONFIG_CHANGED, this.onDeviceConfigChangedHandler);
     this.socket.on(SOCKET_EVENTS.DEVICE_COMMAND_RESULT, this.onDeviceCommandResultHandler.bind(this));
+    this.socket.on('connect_error', (error: any) => {
+      console.log('onConnectError', JSON.stringify(error));
+      if (error && error.type === 'TransportError') {
+        if (error.description === 401) {
+          this.authService.refreshToken();
+        }
+        if (this.socket) {
+          this.socket.removeAllListeners();
+          this.socket.disconnect();
+          this.socket = null;
+        }
+        setTimeout(this.initializeSocket.bind(this), 5000);
+      }
+    });
   }
 
   private onDeviceConnectedHandler(data: { device: string }): void {
