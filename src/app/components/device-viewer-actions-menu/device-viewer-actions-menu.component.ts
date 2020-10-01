@@ -26,27 +26,31 @@ export class DeviceViewerActionsMenuComponent implements OnInit {
 
   ngOnInit() {}
 
-  dismissPopover() {
-    this.popoverController.dismiss();
+  dismissPopover(option: string, data?: any) {
+    this.popoverController.dismiss(data || {}, option);
   }
 
   async actionWidgetsHandler() {
-    this.popoverController.dismiss();
     const name = this.device.DeviceName || this.device.id;
     const deviceId = this.device.id;
     const modal = await this.modalController.create({
       component: DeviceViewerWidgetsComponent,
       componentProps: { name, deviceId }
     });
+    modal.onWillDismiss().then(async (res: any) => {
+      this.dismissPopover('widgets');
+    });
     return modal.present();
   }
 
   async actionInformationHandler() {
-    this.popoverController.dismiss();
     const deviceId = this.device.id;
     const modal = await this.modalController.create({
       component: DeviceViewerInformationComponent,
       componentProps: { deviceId }
+    });
+    modal.onWillDismiss().then(async (res: any) => {
+      this.dismissPopover('information');
     });
     return modal.present();
   }
@@ -58,6 +62,9 @@ export class DeviceViewerActionsMenuComponent implements OnInit {
       component: DeviceViewerConfigurationComponent,
       componentProps: { deviceId }
     });
+    modal.onWillDismiss().then(async (res: any) => {
+      this.dismissPopover('configuration');
+    });
     return modal.present();
   }
 
@@ -68,11 +75,13 @@ export class DeviceViewerActionsMenuComponent implements OnInit {
       component: DeviceViewerFirmwareUpgradeComponent,
       componentProps: { deviceId }
     });
+    modal.onWillDismiss().then(async (res: any) => {
+      this.dismissPopover('firmwareUpgrade');
+    });
     return modal.present();
   }
 
   async actionRestartHandler() {
-    this.popoverController.dismiss();
     const alert = await this.alertController.create({
       header: 'Restart',
       message: 'Are you sure?',
@@ -97,7 +106,7 @@ export class DeviceViewerActionsMenuComponent implements OnInit {
         }
       ]
     });
-
+    this.dismissPopover('restart');
     await alert.present();
   }
 

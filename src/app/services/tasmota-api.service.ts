@@ -69,7 +69,7 @@ export class TasmotaApiService {
     this.socket.on(SOCKET_EVENTS.DEVICE_CONNECTED, this.onDeviceConnectedHandler);
     this.socket.on(SOCKET_EVENTS.DEVICE_DISCONNECTED, this.onDeviceDisconnectedHandler);
     this.socket.on(SOCKET_EVENTS.DEVICE_STATE_CHANGED, this.onDeviceStateChangedHandler.bind(this));
-    this.socket.on(SOCKET_EVENTS.DEVICE_CONFIG_CHANGED, this.onDeviceConfigChangedHandler);
+    this.socket.on(SOCKET_EVENTS.DEVICE_CONFIG_CHANGED, this.onDeviceConfigChangedHandler.bind(this));
     this.socket.on(SOCKET_EVENTS.DEVICE_COMMAND_RESULT, this.onDeviceCommandResultHandler.bind(this));
     this.socket.on('connect_error', (error: any) => {
       console.log('onConnectError', JSON.stringify(error));
@@ -123,7 +123,7 @@ export class TasmotaApiService {
 
   private onDeviceConfigChangedHandler(data: { device: string, config: any }): void {
     console.log('onDeviceConfigChanged', data);
-    TasmotaApiService.deviceConfig[data.device] = Object.assign(TasmotaApiService.deviceConfig[data.device], data.config);
+    TasmotaApiService.deviceConfig[data.device] = Object.assign(TasmotaApiService.deviceConfig[data.device] || {}, data.config);
     const deviceId = data.device;
     const config = TasmotaApiService.deviceConfig[data.device];
     this.deviceConfigChange.emit({ deviceId, config });

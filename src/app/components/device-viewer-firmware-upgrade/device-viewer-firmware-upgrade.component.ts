@@ -52,6 +52,14 @@ export class DeviceViewerFirmwareUpgradeComponent implements OnInit {
     this.modalController.dismiss({ dismissed: true });
   }
 
+  public get upgradeByUrlEnabled(): boolean {
+    return this.url && this.url.length > 0;
+  }
+
+  public get upgradeByFileEnabled(): boolean {
+    return this.minimal && this.minimal.length > 0 && this.firmware && this.firmware.length > 0;
+  }
+
   async upgradeByUrl(): Promise<void> {
     console.log('upgrade by url', this.url);
     if (this.deviceId && this.url) {
@@ -65,6 +73,14 @@ export class DeviceViewerFirmwareUpgradeComponent implements OnInit {
 
   async upgradeByFile(): Promise<void> {
     console.log('upgrade by file', this.minimal, this.firmware);
+  }
+
+  async upgrade(): Promise<void> {
+    if (this.upgradeByUrlEnabled) {
+      await this.upgradeByUrl();
+    } else if (this.upgradeByFileEnabled) {
+      await this.upgradeByFile();
+    }
   }
 
 }

@@ -44,7 +44,7 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
     this.widgets = [];
     let settings: DeviceViewSettings | null = await this.localStorage.getDeviceViewSettings(this.device.id);
     if (settings === null) {
-      settings = { general: {}, widgets: [{ widget: PowerStateComponent.name, options: {} }] };
+      settings = { general: {}, widgets: [{ widget: 'PowerStateComponent', options: {} }] };
       try {
         this.localStorage.setDeviceViewSettings(this.device.id, settings);
       } catch (reason) {
@@ -76,6 +76,12 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
       event: ev,
       translucent: true,
       backdropDismiss: true
+    });
+    popover.onDidDismiss().then(async (res: any) => {
+      console.log('onWillDismiss', res);
+      if (res.role === 'widgets') {
+        // TODO: update view
+      }
     });
     return popover.present();
   }

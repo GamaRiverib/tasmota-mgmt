@@ -6,6 +6,11 @@
       </ion-button>
     </ion-buttons>
     <ion-title>Firmware upgrade</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="upgrade()" [disabled]="!upgradeByUrlEnabled || !upgradeByFileEnabled">
+        <ion-icon slot="icon-only" name="cloud-upload-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -17,10 +22,6 @@
       <ion-label color="medium" position="stacked">URL</ion-label>
       <ion-input type="url" [(ngModel)]="url"></ion-input>
     </ion-item>
-    <ion-button size="large" expand="block" (click)="upgradeByUrl()"
-        class="ion-margin"
-        [disabled]="!url || url.length == 0">Start</ion-button>
-    
     <ion-list-header>
       <ion-label color="secondary">Upgrade using file</ion-label>
     </ion-list-header>
@@ -32,9 +33,5 @@
       <ion-label color="medium" position="stacked">Firmware</ion-label>
       <ion-input type="file" [(ngModel)]="firmware"></ion-input>
     </ion-item>
-    <ion-button size="large" expand="block" (click)="upgradeByFile()"
-        class="ion-margin"
-        [disabled]="(!minimal || minimal.length == 0)&&(!firmware || firmware.length == 0)">Start</ion-button>
-
   </ion-list>
 </ion-content>

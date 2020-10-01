@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Command } from 'src/app/models/command';
 import { Device } from 'src/app/models/device';
+import { DeviceConfig } from 'src/app/models/device-config';
 import { TasmotaApiService } from 'src/app/services/tasmota-api.service';
 import { Widget } from '../widget';
 
@@ -28,6 +30,16 @@ export class Dht11RowComponent implements Widget, OnInit {
 
   ngOnInit() {
     this.updateView(this.device);
+    this.api.onDeviceConfigChange((data: {deviceId: string, config: DeviceConfig}) => {
+      if (data.deviceId === this.device.id) {
+        if (data.config.StatusSNS && data.config.StatusSNS.DHT11) {
+          const dht11 = data.config.StatusSNS.DHT11;
+          this.temperature = dht11.Temperature.toString();
+          this.humidity = dht11.Humidity.toString();
+          this.tempUnit = data.config.StatusSNS.TempUnit;
+        }
+      }
+    });
   }
 
   updateView(device: Device): void {
@@ -41,6 +53,14 @@ export class Dht11RowComponent implements Widget, OnInit {
 
     const lastUpdate: Date = new Date(device.state.Time);
     this.lastUpdate = lastUpdate;
+  }
+
+  refresh(): void {
+    const command: Command = {
+      command: 'Status',
+      parameters: '8'
+    };
+    this.api.sendCommandDevice(this.device.id, command);
   }
 
 }

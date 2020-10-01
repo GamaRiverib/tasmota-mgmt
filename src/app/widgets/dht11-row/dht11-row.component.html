@@ -1,6 +1,9 @@
 <ion-list>
   <ion-list-header>
-    <ion-label color="secondary">DHT11 Sensor</ion-label>
+    <ion-item lines="none">
+      <ion-icon size="small" slot="end" name="refresh-outline" (click)="refresh()"></ion-icon>
+      <ion-label color="secondary">DHT11 Sensor</ion-label>
+    </ion-item>
   </ion-list-header>
   <ion-item *ngIf="!temperature && !humidity">
     <ion-label class="ion-text-center">
