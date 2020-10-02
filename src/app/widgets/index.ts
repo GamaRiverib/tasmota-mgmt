@@ -7,27 +7,32 @@ import { PirMotionOptionsComponent } from './pir-motion-options/pir-motion-optio
 import { PirMotionComponent } from './pir-motion/pir-motion.component';
 import { PowerStateComponent } from './power-state/power-state.component';
 import { PowerStateOptionsComponent } from './power-state-options/power-state-options.component';
+import { SinglePowerDriverComponent } from './single-power-driver/single-power-driver.component';
+import { SinglePowerDriverOptionsComponent } from './single-power-driver-options/single-power-driver-options.component';
 import { Widget, WidgetOptions } from './widget';
 
 const WIDGET_LIST: { [id: string]: Type<Widget> } = {
   Dht11Component,
   Dht11RowComponent,
   PirMotionComponent,
-  PowerStateComponent
+  PowerStateComponent,
+  SinglePowerDriverComponent
 };
 
 const WIDGET_FRIENDLY_NAME_LIST: { [id: string]: string } = {
   Dht11Component: 'DHT11 (cards)',
   Dht11RowComponent: 'DHT11',
   PirMotionComponent: 'PIR Sensor',
-  PowerStateComponent: 'Power drivers'
+  PowerStateComponent: 'Power drivers',
+  SinglePowerDriverComponent: 'Single power driver'
 };
 
 const WIDGET_OPTIONS_LIST: { [id: string]: Type<WidgetOptions> } = {
   Dht11OptionsComponent,
   Dht11RowOptionsComponent,
   PirMotionOptionsComponent,
-  PowerStateOptionsComponent
+  PowerStateOptionsComponent,
+  SinglePowerDriverOptionsComponent
 };
 
 export function getWidgetComponent(name: string): Type<Widget> {

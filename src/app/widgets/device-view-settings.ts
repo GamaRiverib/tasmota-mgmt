@@ -1,6 +1,6 @@
 import { WidgetSettings } from './widget-settings';
 
-export interface DeviceViewSettings {
+export interface WidgetGroupSettings {
   general: { [id: string]: any };
   widgets: WidgetSettings[];
 }

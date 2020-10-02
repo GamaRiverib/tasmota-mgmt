@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Plugins } from '@capacitor/core';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { Platform } from '@ionic/angular';
-import { DeviceViewSettings } from '../widgets/device-view-settings';
+import { WidgetGroupSettings } from '../widgets/device-view-settings';
 const { Storage } = Plugins;
 
 const KEY = 'TASMOTA::DATA';
@@ -11,8 +11,8 @@ const KEY_WIDGET_SETTINGS = 'WIDGET_SETTINGS';
 const KEY_AUTH_DATA = 'AUTH_DATA';
 
 export interface AppData {
-  defaultHouse: string;
-  favorites: string[];
+  defaultHouse?: string;
+  favorites?: string[];
 }
 
 export interface AuthData {
@@ -78,10 +78,10 @@ export class LocalStorageService {
     return localStorage.clear();
   }
 
-  async getDefaultHomeId(): Promise<string | undefined> {
+  async getDefaultHouseId(): Promise<string | undefined> {
     const key = `${KEY}::${KEY_SETTINGS}`;
     try {
-      const settings: AppData = await this.getItem<AppData>(key);
+      const settings: AppData = await this.getItem<AppData>(key) || {};
       return settings.defaultHouse;
     } catch (reason) {
       if (reason.code && reason.code === 2) {
@@ -92,24 +92,25 @@ export class LocalStorageService {
     }
   }
 
-  async setDefaultHomeId(id: string): Promise<void> {
+  async setDefaultHouseId(id: string): Promise<void> {
     const key = `${KEY}::${KEY_SETTINGS}`;
     try {
-      const settings: AppData = await this.getItem<AppData>(key);
+      const settings: AppData = await this.getItem<AppData>(key) || {};
       settings.defaultHouse = id;
       await this.setItem(key, settings);
     } catch (reason) {
       if (reason.code && reason.code === 2) {
         this.setItem(key, { defaultHouse: id });
       }
-      throw new Error('Error setting default broker');
+      console.log(reason);
+      throw new Error('Error setting default house');
     }
   }
 
   async getFavorites(): Promise<Array<string>> {
     const key = `${KEY}::${KEY_SETTINGS}`;
     try {
-      const settings: AppData = await this.getItem(key);
+      const settings: AppData = await this.getItem(key) || {};
       return settings.favorites || [];
     } catch (reason) {
       if (reason.code && reason.code === 2) {
@@ -123,7 +124,7 @@ export class LocalStorageService {
   async setFavorites(favorites: string[]): Promise<void> {
     const key = `${KEY}::${KEY_SETTINGS}`;
     try {
-      const settings: AppData = await this.getItem(key);
+      const settings: AppData = await this.getItem(key) || {};
       settings.favorites = favorites;
       await this.setItem(key, settings);
     } catch (reason) {
@@ -134,28 +135,53 @@ export class LocalStorageService {
     }
   }
 
-  async setDeviceViewSettings(deviceId: string, settings: DeviceViewSettings): Promise<void> {
+  async setDeviceWidgetGroupSettings(deviceId: string, settings: WidgetGroupSettings): Promise<void> {
     try {
       const key = `${KEY}::${KEY_WIDGET_SETTINGS}::${deviceId}`;
-      const deviceViewSettings: DeviceViewSettings = await this.getItem(key);
+      const deviceViewSettings: WidgetGroupSettings = await this.getItem(key);
       const newSettings = Object.assign(deviceViewSettings || {}, settings);
       await this.setItem(key, newSettings);
     } catch (reason) {
-      throw new Error('Error saving widget settings');
+      throw new Error('Error saving device widget group settings');
     }
   }
 
-  async getDeviceViewSettings(deviceId: string): Promise<DeviceViewSettings | null> {
+  async getDeviceWidgetGroupSettings(deviceId: string): Promise<WidgetGroupSettings | null> {
     const key = `${KEY}::${KEY_WIDGET_SETTINGS}::${deviceId}`;
     try {
-      const settings: DeviceViewSettings = await this.getItem(key);
+      const settings: WidgetGroupSettings = await this.getItem(key);
       return settings;
     } catch (reason) {
       if (reason.code && reason.code === 2) {
         return null;
       }
       console.log(reason);
-      throw new Error('Error getting device view settings');
+      throw new Error('Error getting device widget group settings');
+    }
+  }
+
+  async setRoomWidgetGroupSettings(house: string, room: string, settings: WidgetGroupSettings): Promise<void> {
+    try {
+      const key = `${KEY}::${house}::${room}::${KEY_WIDGET_SETTINGS}`;
+      const deviceViewSettings: WidgetGroupSettings = await this.getItem(key);
+      const newSettings = Object.assign(deviceViewSettings || {}, settings);
+      await this.setItem(key, newSettings);
+    } catch (reason) {
+      throw new Error('Error saving room widget group settings');
+    }
+  }
+
+  async getRoomWidgetGroupSettings(house: string, room: string): Promise<WidgetGroupSettings | null> {
+    const key = `${KEY}::${house}::${room}::${KEY_WIDGET_SETTINGS}`;
+    try {
+      const settings: WidgetGroupSettings = await this.getItem(key);
+      return settings;
+    } catch (reason) {
+      if (reason.code && reason.code === 2) {
+        return null;
+      }
+      console.log(reason);
+      throw new Error('Error getting room widget group settings');
     }
   }
 
@@ -173,7 +199,7 @@ export class LocalStorageService {
     }
   }
 
-  async getAuthData(): Promise<AuthData> {
+  async getAuthData(): Promise<AuthData | null> {
     const key = `${KEY}::${KEY_AUTH_DATA}`;
     try {
       const authData: AuthData = await this.getItem(key);

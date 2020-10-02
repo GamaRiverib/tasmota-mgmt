@@ -46,7 +46,7 @@
         <ion-label color="secondary">Rooms</ion-label>
       </ion-list-header>
 
-      <ion-item *ngIf="!house.rooms || house.rooms.length == 0">
+      <ion-item *ngIf="!house.rooms || house.rooms.length == 0" lines="none">
         <ion-label class="ion-text-center">
           No rooms yet
         </ion-label>
@@ -61,7 +61,7 @@
 
     </ion-list>
   </form>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="edit">
     <ion-fab-button (click)="addRoom()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>

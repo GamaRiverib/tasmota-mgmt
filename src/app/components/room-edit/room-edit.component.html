@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="dismiss()">
-        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title>{{ edit ? 'Edit' : 'Add' }} room</ion-title>
@@ -46,7 +46,7 @@
         <ion-label color="secondary">Devices</ion-label>
       </ion-list-header>
 
-      <ion-item *ngIf="!room.devices || room.devices.length == 0">
+      <ion-item *ngIf="!room.devices || room.devices.length == 0" lines="none">
         <ion-label class="ion-text-center">
           No devices yet
         </ion-label>
@@ -61,9 +61,9 @@
 
     </ion-list>
   </form>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="edit">
     <ion-fab-button (click)="selectDevices()">
-      <ion-icon name="pencil-outline"></ion-icon>
+      <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>

@@ -1,0 +1,26 @@
+<ion-card>
+  <ion-grid *ngIf="power" (click)="toggle()">
+    <ion-row>
+      <ion-col class="text-align-left">
+        <ion-icon name="bulb-outline"
+          [color]="power.on ? 'warning': 'medium'">
+        </ion-icon>
+      </ion-col>
+      <ion-col class="text-align-right">
+        <ion-icon name="power-outline"
+          [color]="power.switch ? 'success': 'danger'">
+        </ion-icon>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="text-align-center">
+        <h3>{{ power.name }}</h3>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="options && options.roomName">
+      <ion-col class="text-align-left">
+        <p>{{ options.roomName }}</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-card>

@@ -1,9 +1,23 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>home</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-select [(ngModel)]="house" (ionChange)="changeHouse()" interface="popover">
+        <ion-select-option *ngFor="let h of houses" [value]="h">{{ h.name }}</ion-select-option>
+      </ion-select>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="showHouseOptions($event)">
+        <ion-icon slot="icon-only" name="ellipsis-vertical-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 </ion-content>

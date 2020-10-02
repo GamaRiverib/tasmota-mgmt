@@ -23,7 +23,7 @@
         <ion-item *ngFor="let widget of widgets" class="ion-padding-bottom">
           <!--ion-icon size="large" slot="start" name="cube-outline"></ion-icon-->
           <ion-label>
-            <h2>{{ widget.widget }}</h2>
+            <h2>{{ getWidgetFriendlyName(widget.widget) }}</h2>
           </ion-label>
           <ion-reorder slot="end"></ion-reorder>
         </ion-item>

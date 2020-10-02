@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { getWidgetNames } from 'src/app/widgets';
-import { DeviceViewSettings } from 'src/app/widgets/device-view-settings';
+import { WidgetGroupSettings } from 'src/app/widgets/device-view-settings';
 import { WidgetSettings } from 'src/app/widgets/widget-settings';
 import { DeviceViewerWidgetEditOptionsComponent } from '../device-viewer-widget-edit-options/device-viewer-widget-edit-options.component';
 import { DeviceViewerWidgetSelectComponent } from '../device-viewer-widget-select/device-viewer-widget-select.component';
@@ -17,7 +17,7 @@ export class DeviceViewerWidgetsComponent implements OnInit {
   @Input() name: string;
   @Input() deviceId: string;
 
-  private deviceViewSettings: DeviceViewSettings;
+  private deviceViewSettings: WidgetGroupSettings;
   reorderDisabled = true;
   widgets: WidgetSettings[];
   widgetsFriendlyNames: { name: string, value: string}[];
@@ -28,14 +28,14 @@ export class DeviceViewerWidgetsComponent implements OnInit {
     private localStorage: LocalStorageService) { }
 
   async ngOnInit(): Promise<void> {
-    this.deviceViewSettings = await this.localStorage.getDeviceViewSettings(this.deviceId);
+    this.deviceViewSettings = await this.localStorage.getDeviceWidgetGroupSettings(this.deviceId);
     this.widgets = this.deviceViewSettings.widgets || [];
     this.widgetsFriendlyNames = getWidgetNames();
   }
 
   private async save(): Promise<void> {
     try {
-      await this.localStorage.setDeviceViewSettings(this.deviceId, this.deviceViewSettings);
+      await this.localStorage.setDeviceWidgetGroupSettings(this.deviceId, this.deviceViewSettings);
     } catch (reason) {
       console.log(reason);
     }

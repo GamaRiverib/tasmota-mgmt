@@ -1,0 +1,18 @@
+<ion-list *ngIf="options">
+
+  <ion-item>
+    <ion-select [(ngModel)]="options.index">
+      <ion-select-option value="0">0</ion-select-option>
+      <ion-select-option value="1">1</ion-select-option>
+      <ion-select-option value="2">2</ion-select-option>
+      <ion-select-option value="3">3</ion-select-option>
+      <ion-select-option value="4">4</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label color="medium" position="stacked">Room name</ion-label>
+    <ion-input type="text" max-length="32" [(ngModel)]="options.roomName"></ion-input>
+  </ion-item>
+
+</ion-list>

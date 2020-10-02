@@ -1,4 +1,7 @@
 <ion-list>
+  <ion-list-header>
+    <ion-label color="secondary">Select a house to edit</ion-label>
+  </ion-list-header>
   <ion-item *ngFor="let house of houses"class="ion-padding-bottom" (click)="editHouse(house)">
     <ion-icon size="large" slot="start" name="home-outline"></ion-icon>
     <ion-label>

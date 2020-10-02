@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, Type, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, Type, ViewChild, ViewContainerRef } from '@angular/core';
 import { IonContent, ModalController, PopoverController } from '@ionic/angular';
 import { Command } from 'src/app/models/command';
 import { Device } from 'src/app/models/device';
@@ -6,7 +6,7 @@ import { InjectionService } from 'src/app/services/injection.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { TasmotaApiService } from 'src/app/services/tasmota-api.service';
 import { getWidgetComponent } from 'src/app/widgets';
-import { DeviceViewSettings } from 'src/app/widgets/device-view-settings';
+import { WidgetGroupSettings } from 'src/app/widgets/device-view-settings';
 import { PowerStateComponent } from 'src/app/widgets/power-state/power-state.component';
 import { Widget } from 'src/app/widgets/widget';
 import { WidgetSettings } from 'src/app/widgets/widget-settings';
@@ -42,11 +42,11 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
 
   private async appendWidgets(): Promise<void> {
     this.widgets = [];
-    let settings: DeviceViewSettings | null = await this.localStorage.getDeviceViewSettings(this.device.id);
+    let settings: WidgetGroupSettings | null = await this.localStorage.getDeviceWidgetGroupSettings(this.device.id);
     if (settings === null) {
       settings = { general: {}, widgets: [{ widget: 'PowerStateComponent', options: {} }] };
       try {
-        this.localStorage.setDeviceViewSettings(this.device.id, settings);
+        this.localStorage.setDeviceWidgetGroupSettings(this.device.id, settings);
       } catch (reason) {
         console.log(reason);
       }
@@ -78,9 +78,16 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
       backdropDismiss: true
     });
     popover.onDidDismiss().then(async (res: any) => {
-      console.log('onWillDismiss', res);
       if (res.role === 'widgets') {
-        // TODO: update view
+        const location = this.content.element.nativeElement;
+        // firstChild is refresher component
+        let next = location.firstChild.nextSibling;
+        while (next) {
+          const child = next;
+          next = child.nextSibling;
+          location.removeChild(child);
+        }
+        setTimeout(this.appendWidgets.bind(this), 100);
       }
     });
     return popover.present();

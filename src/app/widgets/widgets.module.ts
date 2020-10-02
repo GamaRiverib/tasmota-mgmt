@@ -10,6 +10,8 @@ import { PirMotionOptionsComponent } from './pir-motion-options/pir-motion-optio
 import { PowerStateOptionsComponent } from './power-state-options/power-state-options.component';
 import { Dht11RowComponent } from './dht11-row/dht11-row.component';
 import { Dht11RowOptionsComponent } from './dht11-row-options/dht11-row-options.component';
+import { SinglePowerDriverComponent } from './single-power-driver/single-power-driver.component';
+import { SinglePowerDriverOptionsComponent } from './single-power-driver-options/single-power-driver-options.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { Dht11RowOptionsComponent } from './dht11-row-options/dht11-row-options.
     PirMotionComponent,
     PirMotionOptionsComponent,
     PowerStateComponent,
-    PowerStateOptionsComponent
+    PowerStateOptionsComponent,
+    SinglePowerDriverComponent,
+    SinglePowerDriverOptionsComponent
   ],
   exports: [
     Dht11Component,
@@ -30,7 +34,9 @@ import { Dht11RowOptionsComponent } from './dht11-row-options/dht11-row-options.
     PirMotionComponent,
     PirMotionOptionsComponent,
     PowerStateComponent,
-    PowerStateOptionsComponent
+    PowerStateOptionsComponent,
+    SinglePowerDriverComponent,
+    SinglePowerDriverOptionsComponent
   ],
   imports: [
     CommonModule,
