@@ -1,0 +1,10 @@
+<ion-list>
+  <ion-item *ngFor="let pair of pairs; let i= index" [id]="'row-' + i" lines="none">
+    <ion-grid>
+      <ion-row>
+        <ion-col [id]="pair.left"></ion-col>
+        <ion-col [id]="pair.right"></ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>  
+</ion-list>

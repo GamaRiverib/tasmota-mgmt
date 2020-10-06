@@ -17,7 +17,7 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { WS_SERVER_URL } from 'src/environments/environment';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 
-const socketConfig: SocketIoConfig = { url: WS_SERVER_URL, options: {} };
+const socketConfig: SocketIoConfig = { url: WS_SERVER_URL, options: { autoConnect : false } };
 
 @NgModule({
   declarations: [AppComponent],

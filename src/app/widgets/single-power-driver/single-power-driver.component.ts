@@ -33,9 +33,12 @@ export class SinglePowerDriverComponent implements Widget, OnInit {
     if (!device || !device.state) {
       return;
     }
-    const i = this.options.index;
-    if (device.state[`POWER${i}`]) {
-      this.power = createPowerData(device, i);
+
+    if (device.id === this.device.id) {
+      const i = this.options.index;
+      if (device.state[`POWER${i}`]) {
+        this.power = createPowerData(device, i);
+      }
     }
   }
 
@@ -48,8 +51,7 @@ export class SinglePowerDriverComponent implements Widget, OnInit {
       command: this.power.topic,
       parameters: 'Toggle'
     };
-    console.log('sendCommand', id, command);
-    // return this.api.sendCommandDevice(id, command);
+    this.api.sendCommandDevice(id, command);
   }
 
 }

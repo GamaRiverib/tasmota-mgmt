@@ -9,6 +9,7 @@ import { HomePageRoutingModule } from './home-routing.module';
 import { HomePage } from './home.page';
 import { WidgetsModule } from 'src/app/widgets/widgets.module';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { LayoutsModule } from 'src/app/layouts/layouts.module';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { ComponentsModule } from 'src/app/components/components.module';
     FormsModule,
     IonicModule,
     ComponentsModule,
+    LayoutsModule,
     WidgetsModule,
     HomePageRoutingModule
   ],

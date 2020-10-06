@@ -39,24 +39,27 @@ export class PirMotionComponent implements Widget, OnInit {
     if (!this.device || !this.device.state) {
       return;
     }
-    this.sensors = [];
-    const online = this.device.online || false;
-    const indexes = this.options && this.options.indexes ? this.options.indexes : ['0', '1', '2', '3', '4'];
-    const names = this.options && this.options.names ? this.options.names : [undefined, undefined, undefined, undefined, undefined];
-    indexes.forEach((i: string, j: number) => {
-      const index = i === '0' ? '' : i;
-      const name = names[j] || `PIR ${j + 1}`;
-      let on = false;
-      const stateOnPower = this.options ? this.options.stateOnPower : false;
-      let pirState: string;
-      if (stateOnPower) {
-        pirState = this.device.state[`POWER${index}`] || '';
-      } else {
-        pirState = this.device.sensor[`Switch${index}`] || '';
-      }
-      on = pirState.toUpperCase() === 'ON' || pirState === '1' || pirState.toUpperCase() === 'TRUE';
-      this.sensors.push({ online, index, name, on });
-    });
+
+    if (device.id === this.device.id) {
+      this.sensors = [];
+      const online = this.device.online || false;
+      const indexes = this.options && this.options.indexes ? this.options.indexes : ['0', '1', '2', '3', '4'];
+      const names = this.options && this.options.names ? this.options.names : [undefined, undefined, undefined, undefined, undefined];
+      indexes.forEach((i: string, j: number) => {
+        const index = i === '0' ? '' : i;
+        const name = names[j] || `PIR ${j + 1}`;
+        let on = false;
+        const stateOnPower = this.options ? this.options.stateOnPower : false;
+        let pirState: string;
+        if (stateOnPower) {
+          pirState = this.device.state[`POWER${index}`] || '';
+        } else {
+          pirState = this.device.sensor[`Switch${index}`] || '';
+        }
+        on = pirState.toUpperCase() === 'ON' || pirState === '1' || pirState.toUpperCase() === 'TRUE';
+        this.sensors.push({ online, index, name, on });
+      });
+    }
   }
 
 }

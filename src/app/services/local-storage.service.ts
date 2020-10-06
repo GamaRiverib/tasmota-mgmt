@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Plugins } from '@capacitor/core';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { Platform } from '@ionic/angular';
-import { WidgetGroupSettings } from '../widgets/device-view-settings';
+import { HouseViewWidgetGroupSettings } from '../widgets/house-view-widget-group-settings';
+import { WidgetGroupSettings } from '../widgets/widget-group-settings';
 const { Storage } = Plugins;
 
 const KEY = 'TASMOTA::DATA';
@@ -135,6 +136,31 @@ export class LocalStorageService {
     }
   }
 
+  async setHouseViewWidgetGroupSettings(houseId: string, view: string, settings: HouseViewWidgetGroupSettings): Promise<void> {
+    try {
+      const key = `${KEY}::${houseId}::${view}::${KEY_WIDGET_SETTINGS}`;
+      const houseViewSettings: HouseViewWidgetGroupSettings = await this.getItem(key);
+      const newSettings = Object.assign(houseViewSettings || {}, settings);
+      await this.setItem(key, newSettings);
+    } catch (reason) {
+      throw new Error('Error saving house view widget group settings');
+    }
+  }
+
+  async getHouseViewWidgetGroupSettings(houseId: string, view: string): Promise<HouseViewWidgetGroupSettings | null> {
+    const key = `${KEY}::${houseId}::${view}::${KEY_WIDGET_SETTINGS}`;
+    try {
+      const settings: HouseViewWidgetGroupSettings = await this.getItem(key);
+      return settings;
+    } catch (reason) {
+      if (reason.code && reason.code === 2) {
+        return null;
+      }
+      console.log(reason);
+      throw new Error('Error getting house view widget group settings');
+    }
+  }
+
   async setDeviceWidgetGroupSettings(deviceId: string, settings: WidgetGroupSettings): Promise<void> {
     try {
       const key = `${KEY}::${KEY_WIDGET_SETTINGS}::${deviceId}`;
@@ -157,31 +183,6 @@ export class LocalStorageService {
       }
       console.log(reason);
       throw new Error('Error getting device widget group settings');
-    }
-  }
-
-  async setRoomWidgetGroupSettings(house: string, room: string, settings: WidgetGroupSettings): Promise<void> {
-    try {
-      const key = `${KEY}::${house}::${room}::${KEY_WIDGET_SETTINGS}`;
-      const deviceViewSettings: WidgetGroupSettings = await this.getItem(key);
-      const newSettings = Object.assign(deviceViewSettings || {}, settings);
-      await this.setItem(key, newSettings);
-    } catch (reason) {
-      throw new Error('Error saving room widget group settings');
-    }
-  }
-
-  async getRoomWidgetGroupSettings(house: string, room: string): Promise<WidgetGroupSettings | null> {
-    const key = `${KEY}::${house}::${room}::${KEY_WIDGET_SETTINGS}`;
-    try {
-      const settings: WidgetGroupSettings = await this.getItem(key);
-      return settings;
-    } catch (reason) {
-      if (reason.code && reason.code === 2) {
-        return null;
-      }
-      console.log(reason);
-      throw new Error('Error getting room widget group settings');
     }
   }
 

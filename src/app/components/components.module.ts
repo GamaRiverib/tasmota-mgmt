@@ -25,6 +25,7 @@ import { DeviceViewerConfigurationOptionsComponent } from './device-viewer-confi
 // tslint:disable-next-line: max-line-length
 import { DeviceViewerConfigurationOthersComponent } from './device-viewer-configuration-others/device-viewer-configuration-others.component';
 import { DeviceViewerConfigurationWifiComponent } from './device-viewer-configuration-wifi/device-viewer-configuration-wifi.component';
+import { LayoutsModule } from '../layouts/layouts.module';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { DeviceViewerConfigurationWifiComponent } from './device-viewer-configur
     CommonModule,
     FormsModule,
     IonicModule,
+    LayoutsModule,
     WidgetsModule
   ]
 })

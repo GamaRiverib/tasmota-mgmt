@@ -34,14 +34,17 @@ export class PowerStateComponent implements Widget, OnInit {
     if (!device || !device.state) {
       return;
     }
-    this.powerList = [];
-    const indexes = this.options && this.options.indexes ? this.options.indexes : ['', '1', '2', '3', '4'];
-    indexes.forEach(index => {
-      const i = index === '0' ? '' : index;
-      if (device.state[`POWER${i}`]) {
-       this.powerList.push(createPowerData(device, i));
-      }
-    });
+
+    if (device.id === this.device.id) {
+      this.powerList = [];
+      const indexes = this.options && this.options.indexes ? this.options.indexes : ['', '1', '2', '3', '4'];
+      indexes.forEach(index => {
+        const i = index === '0' ? '' : index;
+        if (device.state[`POWER${i}`]) {
+        this.powerList.push(createPowerData(device, i));
+        }
+      });
+    }
   }
 
   async toggle(powerData: PowerData): Promise<void> {

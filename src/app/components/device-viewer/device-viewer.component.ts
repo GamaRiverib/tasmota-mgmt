@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnChanges, OnInit, Type, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, Type, ViewChild, ViewContainerRef } from '@angular/core';
 import { IonContent, ModalController, PopoverController } from '@ionic/angular';
 import { Command } from 'src/app/models/command';
 import { Device } from 'src/app/models/device';
@@ -6,10 +6,10 @@ import { InjectionService } from 'src/app/services/injection.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { TasmotaApiService } from 'src/app/services/tasmota-api.service';
 import { getWidgetComponent } from 'src/app/widgets';
-import { WidgetGroupSettings } from 'src/app/widgets/device-view-settings';
+import { WidgetGroupSettings } from 'src/app/widgets/widget-group-settings';
 import { PowerStateComponent } from 'src/app/widgets/power-state/power-state.component';
 import { Widget } from 'src/app/widgets/widget';
-import { WidgetSettings } from 'src/app/widgets/widget-settings';
+import { DeviceWidgetSettings } from 'src/app/widgets/device-widget-settings';
 import { DeviceViewerActionsMenuComponent } from '../device-viewer-actions-menu/device-viewer-actions-menu.component';
 
 @Component({
@@ -22,7 +22,7 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
   @Input() device: Device;
   @ViewChild(IonContent, { read: ViewContainerRef }) content: ViewContainerRef;
 
-  widgets: WidgetSettings[];
+  widgets: DeviceWidgetSettings[];
 
   constructor(
     private injection: InjectionService,
@@ -55,7 +55,7 @@ export class DeviceViewerComponent implements OnInit, OnChanges {
     this.widgets.forEach(w => this.appendWidget(w));
   }
 
-  private async appendWidget(widgetSettings: WidgetSettings): Promise<void> {
+  private async appendWidget(widgetSettings: DeviceWidgetSettings): Promise<void> {
     const component: Type<Widget> = getWidgetComponent(widgetSettings.widget);
     const componentRef = this.injection.appendComponent<Widget>(component, {}, this.content.element.nativeElement);
     componentRef.instance.api = this.api;

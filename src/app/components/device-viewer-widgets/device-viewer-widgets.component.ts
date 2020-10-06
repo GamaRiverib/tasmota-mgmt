@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { getWidgetNames } from 'src/app/widgets';
-import { WidgetGroupSettings } from 'src/app/widgets/device-view-settings';
-import { WidgetSettings } from 'src/app/widgets/widget-settings';
+import { WidgetGroupSettings } from 'src/app/widgets/widget-group-settings';
+import { DeviceWidgetSettings } from 'src/app/widgets/device-widget-settings';
 import { DeviceViewerWidgetEditOptionsComponent } from '../device-viewer-widget-edit-options/device-viewer-widget-edit-options.component';
 import { DeviceViewerWidgetSelectComponent } from '../device-viewer-widget-select/device-viewer-widget-select.component';
 
@@ -19,7 +19,7 @@ export class DeviceViewerWidgetsComponent implements OnInit {
 
   private deviceViewSettings: WidgetGroupSettings;
   reorderDisabled = true;
-  widgets: WidgetSettings[];
+  widgets: DeviceWidgetSettings[];
   widgetsFriendlyNames: { name: string, value: string}[];
 
   constructor(
@@ -77,7 +77,7 @@ export class DeviceViewerWidgetsComponent implements OnInit {
     return widgetFriendlyName.name;
   }
 
-  async editWidget(widgetSettings: WidgetSettings): Promise<void> {
+  async editWidget(widgetSettings: DeviceWidgetSettings): Promise<void> {
     const widget = widgetSettings.widget;
     const options = widgetSettings.options;
     const modal = await this.modalController.create({

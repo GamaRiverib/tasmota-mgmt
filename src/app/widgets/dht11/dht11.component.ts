@@ -53,12 +53,14 @@ export class Dht11Component implements Widget, OnInit {
       return;
     }
 
-    this.temperature = device.sensor.DHT11.Temperature;
-    this.tempUnit = device.sensor.TempUnit;
-    this.humidity = device.sensor.DHT11.Humidity;
+    if (device.id === this.device.id) {
+      this.temperature = device.sensor.DHT11.Temperature;
+      this.tempUnit = device.sensor.TempUnit;
+      this.humidity = device.sensor.DHT11.Humidity;
 
-    const lastUpdate: Date = new Date(device.state.Time);
-    this.lastUpdate = lastUpdate;
+      const lastUpdate: Date = new Date(device.state.Time);
+      this.lastUpdate = lastUpdate;
+    }
   }
 
   refresh(): void {
