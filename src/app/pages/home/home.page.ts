@@ -45,15 +45,15 @@ export class HomePage implements OnInit {
         await this.localStorage.setDefaultHouseId(this.house.id);
       }
     }
-    let houseViewSettings: HouseViewWidgetGroupSettings = await this.localStorage.getHouseViewWidgetGroupSettings(houseId, VIEW_ID);
+    let houseViewSettings: HouseViewWidgetGroupSettings = await this.localStorage.getHouseViewWidgetGroupSettings(this.house.id, VIEW_ID);
     if (!houseViewSettings) {
       houseViewSettings = {
-        house: houseId,
+        house: this.house.id,
         view: VIEW_ID,
         layout: 'TwoColsGridComponent',
         widgets: []
       };
-      this.localStorage.setHouseViewWidgetGroupSettings(houseId, VIEW_ID, houseViewSettings);
+      this.localStorage.setHouseViewWidgetGroupSettings(this.house.id, VIEW_ID, houseViewSettings);
     }
     const layout: Type<Layout> = getLayoutComponent(houseViewSettings.layout || 'TwoColsGridComponent');
     const componentRef = this.injection.appendComponent<Layout>(layout, {}, this.content.element.nativeElement);
