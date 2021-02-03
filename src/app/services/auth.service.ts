@@ -120,7 +120,7 @@ export class AuthService {
             const url = OAUTH_URL;
             const headers = {};
             this.http.setDataSerializer('json');
-            // this.http.clearCookies();
+            this.http.clearCookies();
             this.http.post(url, body, headers)
               .then((response: HTTPResponse) => {
                 if (response.status !== 200) {
@@ -141,16 +141,19 @@ export class AuthService {
                 clearTimeout(timeOut);
                 return resolve();
               })
-              .catch((reason: any) => {
+              .catch(error => {
+                console.log(error);
                 return reject('Something was wrong with authentication process. Code 08');
             });
           }
         }, (error: any) => {
+          console.log(error);
           clearTimeout(timeOut);
           return reject('Something was wrong with authentication process. Code 02');
         });
       });
     } catch (error) {
+      console.log(error);
       throw new Error('Something was wrong with authentication process. Code 00');
     }
   }
@@ -212,7 +215,7 @@ export class AuthService {
         const url = OAUTH_URL;
         const headers = {};
         this.http.setDataSerializer('json');
-        // this.http.clearCookies();
+        this.http.clearCookies();
         this.http.post(url, body, headers)
           .then((response: HTTPResponse) => {
             if (response.status !== 200) {
@@ -230,10 +233,12 @@ export class AuthService {
             this.localStorage.setAuthData(authData);
             return resolve();
           })
-          .catch((reason: any) => {
+          .catch(error => {
+            console.log(error);
             return reject('Something was wrong with refresh token process. Code 03');
         });
       } catch (error) {
+        console.log(error);
         return reject('Something was wrong with refresh token process. Code 00');
       }
     });

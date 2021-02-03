@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      <ion-select [(ngModel)]="house" (ionChange)="changeHouse()" interface="popover">
+      <ion-select [(ngModel)]="house" (ionChange)="changeHouse()" interface="popover" placeholder="Select a house">
         <ion-select-option *ngFor="let h of houses" [value]="h">{{ h.name }}</ion-select-option>
       </ion-select>
     </ion-title>

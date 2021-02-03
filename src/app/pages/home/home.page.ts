@@ -34,7 +34,11 @@ export class HomePage implements OnInit {
 
   private async appendLayout(): Promise<void> {
     const houseId = await this.localStorage.getDefaultHouseId();
-    this.houses = await this.api.getHouses();
+    try {
+      this.houses = await this.api.getHouses();
+    } catch (error) {
+      console.log(error);
+    }
     if (this.houses.length > 0) {
       const defaultHouse = this.houses.find(h => h.default);
       if (defaultHouse) {
@@ -45,19 +49,21 @@ export class HomePage implements OnInit {
         await this.localStorage.setDefaultHouseId(this.house.id);
       }
     }
-    let houseViewSettings: HouseViewWidgetGroupSettings = await this.localStorage.getHouseViewWidgetGroupSettings(this.house.id, VIEW_ID);
-    if (!houseViewSettings) {
-      houseViewSettings = {
-        house: this.house.id,
-        view: VIEW_ID,
-        layout: 'TwoColsGridComponent',
-        widgets: []
-      };
-      this.localStorage.setHouseViewWidgetGroupSettings(this.house.id, VIEW_ID, houseViewSettings);
+    if (this.house) {
+      let houseViewSettings: HouseViewWidgetGroupSettings = await this.localStorage.getHouseViewWidgetGroupSettings(this.house.id, VIEW_ID);
+      if (!houseViewSettings) {
+        houseViewSettings = {
+          house: this.house.id,
+          view: VIEW_ID,
+          layout: 'TwoColsGridComponent',
+          widgets: []
+        };
+        this.localStorage.setHouseViewWidgetGroupSettings(this.house.id, VIEW_ID, houseViewSettings);
+      }
+      const layout: Type<Layout> = getLayoutComponent(houseViewSettings.layout || 'TwoColsGridComponent');
+      const componentRef = this.injection.appendComponent<Layout>(layout, {}, this.content.element.nativeElement);
+      componentRef.instance.widgets = houseViewSettings.widgets;
     }
-    const layout: Type<Layout> = getLayoutComponent(houseViewSettings.layout || 'TwoColsGridComponent');
-    const componentRef = this.injection.appendComponent<Layout>(layout, {}, this.content.element.nativeElement);
-    componentRef.instance.widgets = houseViewSettings.widgets;
   }
 
   async changeHouse(): Promise<void> {

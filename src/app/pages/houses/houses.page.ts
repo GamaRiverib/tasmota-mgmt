@@ -16,7 +16,11 @@ export class HousesPage implements OnInit {
   }
 
   async ngOnInit() {
-    this.houses = await this.api.getHouses();
+    try {
+      this.houses = await this.api.getHouses();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
 }

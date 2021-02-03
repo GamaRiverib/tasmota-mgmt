@@ -6,6 +6,8 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 import { LocalStorageService } from './services/local-storage.service';
+import { SERVER_TRUST_MODE } from 'src/environments/environment';
+import { HTTP } from '@ionic-native/http/ngx';
 
 const LOGIN_PAGE_PATH = 'login';
 
@@ -46,6 +48,7 @@ export class AppComponent implements OnInit {
   public labels = [];
 
   constructor(
+    private http: HTTP,
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
@@ -61,6 +64,13 @@ export class AppComponent implements OnInit {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+    });
+
+    const mode = SERVER_TRUST_MODE as 'nocheck' | 'default' | 'legacy' | 'pinned';
+    this.http.setServerTrustMode(mode).then(() => {
+      console.log(`Set server trust mode ${mode} successful`);
+    }).catch((reason: any) => {
+      console.log(`Set server trust mode ${mode} fails`, reason);
     });
   }
 

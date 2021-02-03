@@ -32,3 +32,5 @@ npm-debug.log*
 
 /android
 src/environments/environment.prod.ts
+
+*.cer

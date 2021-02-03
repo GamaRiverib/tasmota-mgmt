@@ -1,14 +1,16 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+// import { HttpClient } from '@angular/common/http';
 import { House } from '../models/house';
 import { Room, RoomDevice } from '../models/room';
 import { Device } from '../models/device';
 import { DeviceConfig } from '../models/device-config';
 import { Command } from '../models/command';
-import { SERVER_URL, WS_SERVER_URL } from 'src/environments/environment';
+import { LOGIN_PAGE_PATH, SERVER_URL, WS_SERVER_URL } from 'src/environments/environment';
 import { Socket } from 'ngx-socket-io';
 import { SocketIoConfig, ɵa as SocketFactory } from 'ngx-socket-io';
 import { AuthService } from './auth.service';
+import { HTTP, HTTPResponse } from '@ionic-native/http/ngx';
+import { Router } from '@angular/router';
 
 const SOCKET_EVENTS = {
   DEVICE_CONNECTED: 'device-connected',
@@ -33,7 +35,9 @@ export class TasmotaApiService {
     = new EventEmitter<{ deviceId: string, result: any }>();
 
   constructor(
-    private httpClient: HttpClient,
+    // private httpClient: HttpClient,
+    private http: HTTP,
+    private router: Router,
     private authService: AuthService,
     private socket: Socket) {
       this.initializeSocket();
@@ -145,71 +149,199 @@ export class TasmotaApiService {
 
   public async getHouses(): Promise<House[]> {
     const url = `${SERVER_URL}/houses`;
-    const response = await this.httpClient.get<{ houses: House[] }>(url)
+    /*const response = await this.httpClient.get<{ houses: House[] }>(url)
       .toPromise<{ houses: House[] }>();
-    return response.houses || [];
+    return response.houses || [];*/
+
+    const token = this.authService.getAccessTokenSync();
+    const headers = { 
+      Authorization: `Bearer ${token}`
+    };
+    this.http.setDataSerializer('json');
+    this.http.clearCookies();
+    const response: HTTPResponse = await this.http.get(url, null, headers);
+    if (response.status === 401) {
+      this.router.navigate([ LOGIN_PAGE_PATH ]);
+    }
+    const json = response.data ? JSON.parse(response.data) : { houses: [] };
+    return json.houses;
   }
 
   public async createHouse(house: House): Promise<{ id: string }> {
     const url = `${SERVER_URL}/houses`;
     const body = { house };
-    return this.httpClient.post<{ id: string }>(url, body)
-      .toPromise<{ id: string }>();
+    /*return this.httpClient.post<{ id: string }>(url, body)
+      .toPromise<{ id: string }>();*/
+      
+    const token = this.authService.getAccessTokenSync();
+    const headers = { 
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+    this.http.setDataSerializer('json');
+    this.http.clearCookies();
+    const response: HTTPResponse = await this.http.post(url, body, headers);
+    if (response.status === 401) {
+      this.router.navigate([ LOGIN_PAGE_PATH ]);
+    }
+    return response.data ? JSON.parse(response.data) : {};
   }
 
   public async updateHouse(id: string, house: House): Promise<void> {
     const url = `${SERVER_URL}/houses/${id}`;
     const body = { house };
-    return this.httpClient.put<void>(url, body)
-      .toPromise<void>();
+
+    /*return this.httpClient.put<void>(url, body)
+      .toPromise<void>();*/
+    const token = this.authService.getAccessTokenSync();
+    const headers = { 
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+    this.http.setDataSerializer('json');
+    this.http.clearCookies();
+    const response: HTTPResponse = await this.http.put(url, body, headers);
+    if (response.status === 401) {
+      this.router.navigate([ LOGIN_PAGE_PATH ]);
+    }
+    return;
   }
 
   public async removeHouse(id: string): Promise<void> {
     const url = `${SERVER_URL}/houses/${id}`;
-    return this.httpClient.delete<void>(url)
-      .toPromise<void>();
+    /*return this.httpClient.delete<void>(url)
+      .toPromise<void>();*/
+    const token = this.authService.getAccessTokenSync();
+    const headers = { 
+      Authorization: `Bearer ${token}`
+    };
+    this.http.setDataSerializer('json');
+    this.http.clearCookies();
+    const response: HTTPResponse = await this.http.delete(url, null, headers);
+    if (response.status === 401) {
+      this.router.navigate([ LOGIN_PAGE_PATH ]);
+    }
+    return;
   }
 
   public async getHouseRooms(id: string): Promise<Room[]> {
     const url = `${SERVER_URL}/houses/${id}/rooms`;
-    const response = await this.httpClient.get<{ rooms: Room[] }>(url)
+    /*const response = await this.httpClient.get<{ rooms: Room[] }>(url)
       .toPromise<{ rooms: Room[] }>();
-    return response.rooms || [];
+    return response.rooms || [];*/
+    
+    const token = this.authService.getAccessTokenSync();
+    const headers = { 
+      Authorization: `Bearer ${token}`
+    };
+    this.http.setDataSerializer('json');
+    this.http.clearCookies();
+    const response: HTTPResponse = await this.http.get(url, null, headers);
+    if (response.status === 401) {
+      this.router.navigate([ LOGIN_PAGE_PATH ]);
+    }
+    const json = response.data ? JSON.parse(response.data) : { rooms: [] };
+    return json.rooms;
   }
 
   public async createHouseRoom(house: string, room: Room): Promise<{ id: string, house: string }> {
     const url = `${SERVER_URL}/houses/${house}/rooms`;
     const body = { room };
-    return this.httpClient.post<{ id: string, house: string }>(url, body)
-      .toPromise<{ id: string, house: string }>();
+    /*return this.httpClient.post<{ id: string, house: string }>(url, body)
+      .toPromise<{ id: string, house: string }>();*/
+    
+    const token = this.authService.getAccessTokenSync();
+    const headers = { 
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+    this.http.setDataSerializer('json');
+    this.http.clearCookies();
+    const response: HTTPResponse = await this.http.post(url, body, headers);
+    if (response.status === 401) {
+      this.router.navigate([ LOGIN_PAGE_PATH ]);
+    }
+    return response.data ? JSON.parse(response.data) : { id: '', house: '' };
   }
 
   public async updateHouseRoom(house: string, id: string, room: Room): Promise<void> {
     const url = `${SERVER_URL}/houses/${house}/rooms/${id}`;
     const body = { room };
-    return this.httpClient.put<void>(url, body)
-      .toPromise<void>();
+    /*return this.httpClient.put<void>(url, body)
+      .toPromise<void>();*/
+
+    const token = this.authService.getAccessTokenSync();
+    const headers = { 
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+    this.http.setDataSerializer('json');
+    this.http.clearCookies();
+    const response: HTTPResponse = await this.http.put(url, body, headers);
+    if (response.status === 401) {
+      this.router.navigate([ LOGIN_PAGE_PATH ]);
+    }
+    return;
   }
 
   public async removeHouseRoom(house: string, room: string): Promise<void> {
     const url = `${SERVER_URL}/houses/${house}/rooms/${room}`;
-    return this.httpClient.delete<void>(url)
-      .toPromise<void>();
+    /*return this.httpClient.delete<void>(url)
+      .toPromise<void>();*/
+
+    const token = this.authService.getAccessTokenSync();
+    const headers = { 
+      Authorization: `Bearer ${token}`
+    };
+    this.http.setDataSerializer('json');
+    this.http.clearCookies();
+    const response: HTTPResponse = await this.http.delete(url, null, headers);
+    if (response.status === 401) {
+      this.router.navigate([ LOGIN_PAGE_PATH ]);
+    }
+    return;
   }
 
   public async setHouseRoomDevices(house: string, room: string, devices: RoomDevice[]): Promise<void> {
     const url = `${SERVER_URL}/houses/${house}/rooms/${room}/devices`;
     const body = { devices };
-    return this.httpClient.put<void>(url, body)
-      .toPromise<void>();
+    /*return this.httpClient.put<void>(url, body)
+      .toPromise<void>();*/
+    
+    const token = this.authService.getAccessTokenSync();
+    const headers = { 
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+    this.http.setDataSerializer('json');
+    this.http.clearCookies();
+    const response: HTTPResponse = await this.http.put(url, body, headers);
+    if (response.status === 401) {
+      this.router.navigate([ LOGIN_PAGE_PATH ]);
+    }
+    return;
   }
 
   public async getDevices(force?: boolean): Promise<Device[]> {
     if (force || TasmotaApiService.devices === undefined || TasmotaApiService.devices.length === 0) {
       const url = `${SERVER_URL}/devices`;
-      const response = await this.httpClient.get<{ devices: Device[] }>(url)
+      /*const response = await this.httpClient.get<{ devices: Device[] }>(url)
         .toPromise<{ devices: Device[] }>();
-      TasmotaApiService.devices = response.devices || [];
+      TasmotaApiService.devices = response.devices || [];*/
+
+      const token = this.authService.getAccessTokenSync();
+      const headers = { 
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      };
+      this.http.setDataSerializer('json');
+      this.http.clearCookies();
+      const response: HTTPResponse = await this.http.get(url, null, headers);
+      if (response.status === 401) {
+        this.router.navigate([ LOGIN_PAGE_PATH ]);
+      }
+      const json = response.data ? JSON.parse(response.data) : { devices: [] };
+      TasmotaApiService.devices = json.devices;
     }
     return TasmotaApiService.devices;
   }
@@ -217,9 +349,23 @@ export class TasmotaApiService {
   public async getDeviceConfig(id: string, force?: boolean): Promise<DeviceConfig> {
     if (force || TasmotaApiService.deviceConfig[id] === undefined || TasmotaApiService.deviceConfig[id] === {}) {
       const url = `${SERVER_URL}/devices/${id}/config`;
-      const response = await this.httpClient.get<{ deviceConfig: DeviceConfig }>(url)
+      /*const response = await this.httpClient.get<{ deviceConfig: DeviceConfig }>(url)
         .toPromise<{ deviceConfig: DeviceConfig }>();
-      TasmotaApiService.deviceConfig[id] = response.deviceConfig || {};
+      TasmotaApiService.deviceConfig[id] = response.deviceConfig || {};*/
+
+        const token = this.authService.getAccessTokenSync();
+        const headers = { 
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        };
+        this.http.setDataSerializer('json');
+        this.http.clearCookies();
+        const response: HTTPResponse = await this.http.get(url, null, headers);
+        if (response.status === 401) {
+          this.router.navigate([ LOGIN_PAGE_PATH ]);
+        }
+        const json = response.data ? JSON.parse(response.data) : { deviceConfig: {} };
+        TasmotaApiService.deviceConfig[id] = json.deviceConfig;
     }
     return TasmotaApiService.deviceConfig[id];
   }
@@ -227,8 +373,21 @@ export class TasmotaApiService {
   public async sendCommandDevice(id: string, command: Command): Promise<void> {
     const url = `${SERVER_URL}/devices/${id}/cmnd`;
     const body = { command };
-    return this.httpClient.post<void>(url, body)
-      .toPromise<void>();
+    /*return this.httpClient.post<void>(url, body)
+      .toPromise<void>();*/
+
+    const token = this.authService.getAccessTokenSync();
+    const headers = { 
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+    this.http.setDataSerializer('json');
+    this.http.clearCookies();
+    const response: HTTPResponse = await this.http.post(url, body, headers);
+    if (response.status === 401) {
+      this.router.navigate([ LOGIN_PAGE_PATH ]);
+    }
+    return;
   }
 
   public onDeviceStateChange(next: (device: Device) => void): void {

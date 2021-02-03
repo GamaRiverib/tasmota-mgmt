@@ -3,8 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Device } from 'src/app/models/device';
 import { TasmotaApiService } from 'src/app/services/tasmota-api.service';
-
-const LOGIN_PAGE_PATH = 'login';
+import { LOGIN_PAGE_PATH } from 'src/environments/environment';
 
 @Component({
   selector: 'app-devices',
@@ -24,11 +23,6 @@ export class DevicesPage implements OnInit {
       this.devices = await this.api.getDevices();
     } catch (reason) {
       console.log(reason);
-      if (reason instanceof HttpErrorResponse) {
-        if (reason.status === 401) {
-          this.router.navigate([ LOGIN_PAGE_PATH ]);
-        }
-      }
     }
   }
 

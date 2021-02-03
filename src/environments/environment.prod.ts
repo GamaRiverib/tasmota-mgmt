@@ -13,3 +13,7 @@ export const REDIRECT_URI = '';
 export const CLIENT_SECRET = '';
 
 export const OAUTH_URL = '';
+
+export const SERVER_TRUST_MODE = 'nocheck';
+
+export const LOGIN_PAGE_PATH = 'login';
