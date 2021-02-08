@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, Type, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, Type, ViewChild } from '@angular/core';
 import { IonList } from '@ionic/angular';
 import { Device } from 'src/app/models/device';
 import { InjectionService } from 'src/app/services/injection.service';
@@ -40,6 +40,7 @@ export class TwoColsGridComponent implements Layout, OnInit {
     for (let i = 0; i < this._widgets.length; i += 2) {
       this.pairs.push({ left: `row-${i}-col-left`, right: `row-${i}-col-right`});
     }
+    // setTimeout(this.appendWidgets.bind(this), 200);
   }
 
   async ngOnInit(): Promise<void> {

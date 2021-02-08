@@ -50,15 +50,64 @@ export class HomePage implements OnInit {
       }
     }
     if (this.house) {
-      let houseViewSettings: HouseViewWidgetGroupSettings = await this.localStorage.getHouseViewWidgetGroupSettings(this.house.id, VIEW_ID);
+      // let houseViewSettings: HouseViewWidgetGroupSettings = await this.localStorage.getHouseViewWidgetGroupSettings(this.house.id, VIEW_ID);
+      let houseViewSettings = undefined;
       if (!houseViewSettings) {
         houseViewSettings = {
           house: this.house.id,
           view: VIEW_ID,
           layout: 'TwoColsGridComponent',
-          widgets: []
+          widgets: [{
+            device: 'recamara1',
+            room: 'e1c32561-ba4c-46dc-ae8f-17b84470410a',
+            widget: 'SinglePowerDriverComponent',
+            options: {
+              index: '',
+              roomName: 'Recámara principal'
+            }
+          }, {
+            device: 'cocina',
+            room: '17283709-b35c-47b9-85cc-291d76e876f9',
+            widget: 'SinglePowerDriverComponent',
+            options: {
+              index: '4',
+              roomName: 'Cocina'
+            }
+          }, {
+            device: 'cochera',
+            room: 'd5dc616a-db09-41da-97e0-db3cf9160e9f',
+            widget: 'SinglePowerDriverComponent',
+            options: {
+              index: '',
+              roomName: 'Cochera'
+            }
+          }, {
+            device: 'estancia',
+            room: 'a7d0b71e-746e-44e0-bae8-14ce346e85a7',
+            widget: 'SinglePowerDriverComponent',
+            options: {
+              index: '',
+              roomName: 'Estancia'
+            }
+          }, {
+            device: 'cocina',
+            room: 'c0724560-c495-418e-ba15-e9823e74b1a9',
+            widget: 'SinglePowerDriverComponent',
+            options: {
+              index: '2',
+              roomName: 'Patio trasero'
+            }
+          }, {
+            device: 'cocina',
+            room: 'c0724560-c495-418e-ba15-e9823e74b1a9',
+            widget: 'SinglePowerDriverComponent',
+            options: {
+              index: '3',
+              roomName: 'Pasillo patio'
+            }
+          }]
         };
-        this.localStorage.setHouseViewWidgetGroupSettings(this.house.id, VIEW_ID, houseViewSettings);
+        // this.localStorage.setHouseViewWidgetGroupSettings(this.house.id, VIEW_ID, houseViewSettings);
       }
       const layout: Type<Layout> = getLayoutComponent(houseViewSettings.layout || 'TwoColsGridComponent');
       const componentRef = this.injection.appendComponent<Layout>(layout, {}, this.content.element.nativeElement);

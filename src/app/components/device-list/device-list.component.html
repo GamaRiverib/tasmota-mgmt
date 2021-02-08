@@ -10,6 +10,9 @@
     </ion-icon>
     <ion-label>
       <h1>{{ device.DeviceName || device.id }}</h1>
+      <p class="ion-text-wrap" *ngIf="device.FriendlyName">
+        {{ device.FriendlyName  }}
+      </p>
     </ion-label>
   </ion-item>
 </ion-list>

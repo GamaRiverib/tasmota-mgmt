@@ -36,7 +36,7 @@ export class SinglePowerDriverComponent implements Widget, OnInit {
 
     if (device.id === this.device.id) {
       const i = this.options.index;
-      if (device.state[`POWER${i}`]) {
+      if (device.state[`POWER${i === '0' ? '' : i}`]) {
         this.power = createPowerData(device, i);
       }
     }
